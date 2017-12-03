@@ -11,9 +11,10 @@ using System;
 namespace DriveWithStrangers.Data.Migrations
 {
     [DbContext(typeof(DriveWithStrangersDbContext))]
-    partial class DriveWithStrangersDbContextDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171203124252_InitalCreate")]
+    partial class InitalCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
