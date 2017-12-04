@@ -39,7 +39,7 @@
             // Clear the existing external cookie to ensure a clean login process
             await this.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ViewData["ReturnUrl"] = returnUrl;
+            this.ViewData["ReturnUrl"] = returnUrl;
             return this.View();
         }
 
@@ -53,7 +53,7 @@
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await this.signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User logged in.");
@@ -210,10 +210,19 @@
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             this.ViewData["ReturnUrl"] = returnUrl;
+
             if (this.ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    UserFullName = model.UserFullName,
+                    UserAge = model.UserAge
+                };
+
                 var result = await this.userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User created a new account with password.");
@@ -222,6 +231,7 @@
                     this.logger.LogInformation("User created a new account with password.");
                     return this.RedirectToLocal(returnUrl);
                 }
+
                 this.AddErrors(result);
             }
 

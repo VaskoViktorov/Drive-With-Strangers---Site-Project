@@ -47,7 +47,9 @@
                             adminUser = new User
                             {
                                 Email = adminEmail,
-                                UserName = adminEmail
+                                UserName = adminEmail,
+                                UserFullName = roleNameAdmin,
+                                UserAge = 27
                             };
 
                             await userManager.CreateAsync(adminUser, "admin12");

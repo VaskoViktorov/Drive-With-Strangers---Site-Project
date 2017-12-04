@@ -11,14 +11,57 @@
         {
         }
 
-       public DbSet<User> Users { get; set; }
+        public DbSet<Article> Articles { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Trip> Trips { get; set; }
+
+        public DbSet<UserTrip> UserTrips { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            builder
+                .Entity<Article>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Articles)
+                .HasForeignKey(a => a.UserId);
+
+            builder
+                .Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId);
+
+            builder
+                .Entity<Comment>()
+                .HasOne(c => c.Trip)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.TripId);
+
+            builder
+                .Entity<Trip>()
+                .HasOne(t => t.Driver)
+                .WithMany(u => u.MyTrips)
+                .HasForeignKey(t => t.DriverId);
+
+            builder
+                .Entity<UserTrip>()
+                .HasKey(ut => new {ut.UserId, ut.TripId});
+
+            builder
+                .Entity<UserTrip>()
+                .HasOne(ut => ut.User)
+                .WithMany(u => u.Trips)
+                .HasForeignKey(ut => ut.UserId);
+
+            builder
+                .Entity<UserTrip>()
+                .HasOne(ut => ut.Trip)
+                .WithMany(u => u.Passengers)
+                .HasForeignKey(ut => ut.TripId);
+
+            base.OnModelCreating(builder);            
         }
     }
 }
