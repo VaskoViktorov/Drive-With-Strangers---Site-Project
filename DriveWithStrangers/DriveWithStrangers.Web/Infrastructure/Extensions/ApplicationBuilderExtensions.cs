@@ -28,16 +28,25 @@
                     {
                         var roleNameAdmin = WebConstants.AdministratorRole;
 
-                        var roleExists = await roleManager.RoleExistsAsync(roleNameAdmin);
-
-                        if (!roleExists)
+                        var roles = new[]
                         {
-                            await roleManager.CreateAsync(new IdentityRole
-                            {
-                                Name = roleNameAdmin
-                            });
-                        }
+                            roleNameAdmin,
+                            WebConstants.BlogAuthorRole
+                        };
 
+                        foreach (var role in roles)
+                        {
+                            var roleExists = await roleManager.RoleExistsAsync(role);
+
+                            if (!roleExists)
+                            {
+                                await roleManager.CreateAsync(new IdentityRole
+                                {
+                                    Name = role
+                                });
+                            }
+                        }
+                        
                         var adminEmail = "admin@mysite.com";
 
                         var adminUser = await userManager.FindByEmailAsync(adminEmail);
@@ -55,7 +64,9 @@
                             await userManager.CreateAsync(adminUser, "admin12");
 
                             await userManager.AddToRoleAsync(adminUser, roleNameAdmin);
+                            await userManager.AddToRoleAsync(adminUser, WebConstants.BlogAuthorRole);
                         }
+                       
                     })
                     .Wait();
             }

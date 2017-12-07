@@ -30,10 +30,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li><a asp-area="Blog" asp-controller="Articles" asp-action="Index">Blog</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @if (User.IsInRole(WebConstants.AdministratorRole))
+                    {
+                        <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
+                    }
+                    @if (User.IsInRole(WebConstants.BlogAuthorRole))
+                    {
+                        <li><a asp-area="Blog" asp-controller="Articles" asp-action="Create">Create Article</a></li>
+                    }
                 </ul>
+
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
