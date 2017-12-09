@@ -18,6 +18,14 @@
         [MinLength(ArticleContentMinLength)]
         public string Content { get; set; }
 
+        [Required]
+        [MaxLength(ArticleImageUrlMaxLength)]
+        public string ImageUrl { get; set; }
+
+        [Required]
+        [MaxLength(ArticleShortContentMaxLength)]
+        public string ShortContent { get; set; }
+
         public DateTime ReleaseDate { get; set; }
 
         public DateTime CreateDate { get; set; }

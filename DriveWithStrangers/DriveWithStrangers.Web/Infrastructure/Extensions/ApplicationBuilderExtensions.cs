@@ -27,11 +27,12 @@
                     .Run(async () =>
                     {
                         var roleNameAdmin = WebConstants.AdministratorRole;
+                        var roleNameBlogAuthor = WebConstants.BlogAuthorRole;
 
                         var roles = new[]
                         {
                             roleNameAdmin,
-                            WebConstants.BlogAuthorRole
+                            roleNameBlogAuthor
                         };
 
                         foreach (var role in roles)
@@ -63,10 +64,11 @@
 
                             await userManager.CreateAsync(adminUser, "admin12");
 
-                            await userManager.AddToRoleAsync(adminUser, roleNameAdmin);
-                            await userManager.AddToRoleAsync(adminUser, WebConstants.BlogAuthorRole);
-                        }
-                       
+                            foreach (var role in roles)
+                            {
+                                await userManager.AddToRoleAsync(adminUser, role);
+                            }
+                        }                     
                     })
                     .Wait();
             }

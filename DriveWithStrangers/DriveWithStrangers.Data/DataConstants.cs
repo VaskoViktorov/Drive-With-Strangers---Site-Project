@@ -5,6 +5,8 @@
         public const int ArticleTitleMinLength = 3;
         public const int ArticleTitleMaxLength = 100;
         public const int ArticleContentMinLength = 100;
+        public const int ArticleShortContentMaxLength = 255;
+        public const int ArticleImageUrlMaxLength = 500;
 
         public const int CommentTitleMinLength = 2;
         public const int CommentTitleMaxLength = 50;

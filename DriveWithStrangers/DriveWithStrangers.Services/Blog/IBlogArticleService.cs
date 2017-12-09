@@ -13,6 +13,10 @@
 
         Task<BlogArticleDetailsServiceModel> ById(int id);
 
-        Task Create(DateTime releaseDate, string title, string content, string authorId);
+        Task Create(DateTime releaseDate, string title, string content, string authorId, string shortContent, string imageUrl);
+
+        Task Edit(int id, string title, string content, DateTime releaseDate, string userId, string shortContent, string imageUrl);
+
+        Task Delete(int id);
     }
 }

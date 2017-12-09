@@ -49,13 +49,24 @@
         </div>
     </nav>
     <div class="container body-content">
+        @if (TempData.ContainsKey(WebConstants.TempDataSuccessMessageKey))
+        {
+            <div class="alert alert-success">
+                @TempData[WebConstants.TempDataSuccessMessageKey]
+            </div>
+        }
+        @if (TempData.ContainsKey(WebConstants.TempDataWarningMessageKey))
+        {
+            <div class="alert alert-warning">
+                @TempData[WebConstants.TempDataWarningMessageKey]
+            </div>
+        }
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - DriveWithStrangers.Web</p>
+            <p>&copy; 2017 - Learning System</p>
         </footer>
     </div>
-
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

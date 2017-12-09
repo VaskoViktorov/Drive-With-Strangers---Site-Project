@@ -11,5 +11,10 @@
         {
             tempData[WebConstants.TempDataSuccessMessageKey] = message;
         }
+
+        public static void AddWarningMessage(this ITempDataDictionary tempData, string message)
+        {
+            tempData[WebConstants.TempDataWarningMessageKey] = message;
+        }
     }
 }

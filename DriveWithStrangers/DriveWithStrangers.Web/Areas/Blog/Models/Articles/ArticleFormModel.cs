@@ -5,7 +5,7 @@
 
     using static Data.DataConstants;
 
-    public class PublishArticleFormModel
+    public class ArticleFormModel
     {
         [Required]
         [MinLength(ArticleTitleMinLength)]
@@ -17,5 +17,13 @@
 
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
+
+        [Required]
+        [MaxLength(ArticleShortContentMaxLength)]
+        public string ShortContent { get; set; }
+
+        [Required]
+        [MaxLength(ArticleImageUrlMaxLength)]
+        public string ImageUrl { get; set; }
     }
 }

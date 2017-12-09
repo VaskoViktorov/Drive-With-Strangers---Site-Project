@@ -33,7 +33,7 @@
             .ToListAsync();
 
         public async Task<int> TotalAsync()
-            =>  await this.db
+            => await this.db
                 .Articles
                 .Where(a => a.ReleaseDate <= DateTime.UtcNow)
                 .CountAsync();
@@ -45,18 +45,57 @@
                 .ProjectTo<BlogArticleDetailsServiceModel>()
                 .FirstOrDefaultAsync();
 
-        public async Task Create(DateTime releaseDate, string title, string content, string authorId)
+        public async Task Create(DateTime releaseDate, string title, string content, string authorId, string shortContent, string imageUrl)
         {
             var article = new Article
-            {             
+            {
                 Title = title,
                 Content = content,
                 ReleaseDate = releaseDate,
                 CreateDate = DateTime.UtcNow,
+                ShortContent = shortContent,
+                ImageUrl = imageUrl,
                 UserId = authorId
             };
 
             this.db.Add(article);
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task Edit(int id, string title, string content, DateTime releaseDate, string userId, string shortContent, string imageUrl)
+        {
+            var article = await this.db.Articles.FindAsync(id);
+
+            if (article == null)
+            {
+                return;
+            }
+
+            if (article.UserId != userId)
+            {
+                return;
+            }
+
+            article.Title = title;
+            article.Content = content;
+            article.ReleaseDate = releaseDate;
+            article.ShortContent = shortContent;
+            article.ImageUrl = imageUrl;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var article = await this.db.Articles.FindAsync(id);
+
+            if (article == null)
+            {
+                return;
+            }
+
+            this.db.Articles.Remove(article);
+
             await this.db.SaveChangesAsync();
         }
     }

@@ -26,6 +26,11 @@
     margin: 15px;
 }
 
+/* Article pagination */
+ul.pagination li.page-item a.disabled {
+    pointer-events: none !important;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

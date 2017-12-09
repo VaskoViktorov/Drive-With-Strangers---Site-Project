@@ -11,9 +11,10 @@ using System;
 namespace DriveWithStrangers.Data.Migrations
 {
     [DbContext(typeof(DriveWithStrangersDbContext))]
-    partial class DriveWithStrangersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171209174526_ArticleImgAndShortContentColumn")]
+    partial class ArticleImgAndShortContentColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,15 +31,11 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(500);
+                    b.Property<string>("ImageUrl");
 
                     b.Property<DateTime>("ReleaseDate");
 
-                    b.Property<string>("ShortContent")
-                        .IsRequired()
-                        .HasMaxLength(255);
+                    b.Property<string>("ShortContent");
 
                     b.Property<string>("Title")
                         .IsRequired()

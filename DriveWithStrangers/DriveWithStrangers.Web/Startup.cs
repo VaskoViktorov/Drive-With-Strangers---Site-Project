@@ -72,7 +72,22 @@
             {
 
                 routes.MapRoute(
-                    name: "blog",
+                    name: "editArticle",
+                    template: "blog/articles/edit/{id}",
+                    defaults: new { area = "Blog", controller = "Articles", action = "Edit" });
+
+                routes.MapRoute(
+                    name: "deleteArticle",
+                    template: "blog/articles/delete/{id}",
+                    defaults: new { area = "Blog", controller = "Articles", action = "Delete" });
+
+                routes.MapRoute(
+                    name: "destroyArticle",
+                    template: "blog/articles/destroy/{id}",
+                    defaults: new { area = "Blog", controller = "Articles", action = "Destroy" });
+
+                routes.MapRoute(
+                    name: "articleDetails",
                     template: "blog/articles/{id}/{title}",
                     defaults: new { area = "Blog", controller = "Articles", action = "Details" });
 

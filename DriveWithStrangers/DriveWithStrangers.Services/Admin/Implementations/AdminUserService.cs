@@ -20,6 +20,6 @@
             => await this.db
                 .Users
                 .ProjectTo<AdminUserServiceListingModel>()
-                .ToListAsync();
+                .ToListAsync();        
     }
 }

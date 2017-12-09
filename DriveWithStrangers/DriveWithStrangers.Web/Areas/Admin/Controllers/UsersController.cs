@@ -29,6 +29,7 @@
         public async Task<IActionResult> Index()
         {
             var allUsers = await this.users.AllAsync();
+
             var roles = await this.roleManager
                 .Roles
                 .Select(r => new SelectListItem
@@ -49,10 +50,10 @@
         [HttpPost]
         public async Task<IActionResult> AddToRole(AddUserToRoleFormModel model)
         {
+
             var roleExists = await this.roleManager.RoleExistsAsync(model.Role);
             var user = await this.userManager.FindByIdAsync(model.UserId);
             var userExists = user != null;
-
 
             if (!roleExists || !userExists)
             {
@@ -64,11 +65,34 @@
                 this.RedirectToAction(nameof(this.Index));
             }
 
-            await this.userManager.AddToRoleAsync(user, model.Role);
+            if (this.Request.Form.ContainsKey("add"))
+            {
+                if (await this.userManager.IsInRoleAsync(user, model.Role))
+                {
+                    this.TempData.AddWarningMessage($"User {user.UserName} is already in {model.Role} role.");
 
-            this.TempData.AddSuccessMessage($"User {user.UserName} successfully added to the {model.Role} role.");
+                    return this.RedirectToAction(nameof(this.Index));
+                }
+
+                await this.userManager.AddToRoleAsync(user, model.Role);
+                this.TempData.AddSuccessMessage($"User {user.UserName} successfully added to the {model.Role} role.");
+            }
+
+            if (this.Request.Form.ContainsKey("remove"))
+            {
+                if (!await this.userManager.IsInRoleAsync(user, model.Role))
+                {
+                    this.TempData.AddWarningMessage($"User {user.UserName} is not in {model.Role} role.");
+
+                    return this.RedirectToAction(nameof(this.Index));
+                }
+
+                await this.userManager.RemoveFromRoleAsync(user, model.Role);
+
+                this.TempData.AddSuccessMessage($"User {user.UserName} is no longer {model.Role}.");
+            }
 
             return this.RedirectToAction(nameof(this.Index));
-        }            
+        }
     }
 }
