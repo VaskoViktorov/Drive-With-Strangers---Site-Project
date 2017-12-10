@@ -39,10 +39,13 @@
                 })
                 .ToListAsync();
 
+            var userRoles = await this.users.UsersInRoleAsync();
+
             return this.View(new AdminUsersListingViewModel
             {
                 Users = allUsers,
-                Roles = roles
+                Roles = roles,
+                UserRoles = userRoles               
             });
 
         }
@@ -75,6 +78,7 @@
                 }
 
                 await this.userManager.AddToRoleAsync(user, model.Role);
+
                 this.TempData.AddSuccessMessage($"User {user.UserName} successfully added to the {model.Role} role.");
             }
 

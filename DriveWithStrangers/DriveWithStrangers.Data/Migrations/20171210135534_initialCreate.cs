@@ -1,10 +1,11 @@
-﻿namespace DriveWithStrangers.Data.Migrations
-{
-    using Microsoft.EntityFrameworkCore.Metadata;
-    using Microsoft.EntityFrameworkCore.Migrations;
-    using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
 
-    public partial class InitialCreate : Migration
+namespace DriveWithStrangers.Data.Migrations
+{
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +42,9 @@
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    ImageUrl = table.Column<string>(maxLength: 500, nullable: false),
                     ReleaseDate = table.Column<DateTime>(nullable: false),
+                    ShortContent = table.Column<string>(maxLength: 255, nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },

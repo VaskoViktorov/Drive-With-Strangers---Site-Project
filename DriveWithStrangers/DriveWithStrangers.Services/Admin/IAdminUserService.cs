@@ -7,5 +7,7 @@
     public interface IAdminUserService
    {
        Task<IEnumerable<AdminUserServiceListingModel>> AllAsync();
+
+       Task<Dictionary<string, List<string>>> UsersInRoleAsync();
    }
 }

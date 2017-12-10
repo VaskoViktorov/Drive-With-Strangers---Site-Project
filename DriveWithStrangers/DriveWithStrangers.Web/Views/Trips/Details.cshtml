@@ -1,0 +1,105 @@
+﻿@model TripDetailsViewModel
+@{
+    ViewData["Title"] = Model.Trip.Title;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <p>Driver: @Model.Trip.Driver.UserName</p>
+        <p>Car info: @Model.Trip.CarModel</p>
+        <p>Trip info: @Model.Trip.StartDate - from @Model.Trip.StartLocation to @Model.Trip.EndLocation</p>
+        <p>Additional info: @Model.Trip.Description</p>
+        <div class="row">
+            @if (Model.Trip.PricePerPassenger == 0)
+            {
+                <h5>Price per passenger: <span class="color-green">FREE</span></h5>
+            }
+            else
+            {
+                <h5>Price per passenger: @Model.Trip.PricePerPassenger $</h5>
+            }
+
+        </div>
+        <div class="row">
+            @if (Model.Passangers.Count() == Model.Trip.TotalSeats)
+            {
+                <h5>Car Space: <span class="color-red">FULL</span></h5>
+            }
+            else
+            {
+                <p>Car Space: @Model.Passangers.Count() / @Model.Trip.TotalSeats</p>
+            }
+            @if (Model.Passangers.Any())
+            {
+                <p>Signed passagers</p>
+                <ul>
+                    @foreach (var passenger in Model.Passangers)
+                    {
+                        <li>@passenger.UserName</li>
+                    }
+                </ul>
+            }
+
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (Model.Trip.StartDate > DateTime.UtcNow)
+                {
+                    if ((bool)Model.UserIsSignedInCourse)
+                    {
+                        <form asp-action="SignOut" asp-route-id="@Model.Trip.Id" method="post">
+                            <input type="submit" value="Sign out" class="btn btn-primary" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Join" asp-route-id="@Model.Trip.Id" method="post">
+                            <input type="submit" value="Join" class="btn btn-success" />
+                        </form>
+                    }
+
+                }
+                else
+                {
+                    <span>The trip has already finished.</span>
+                }
+            }
+            else
+            {
+                <span>
+                    To join a trip, please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in</a>.
+                    If you don't have account, please <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Context.Request.Path">register</a>.
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+
+@if (Model.Trip.Driver.UserName == User.Identity.Name)
+{
+    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Edit</a>
+    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
+}
+
+@if (User.IsInRole(WebConstants.AdministratorRole) && Model.Trip.Driver.UserName != User.Identity.Name)
+{
+    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
+}
+
+<a class="btn btn-default btn-sm" asp-controller="Trips" asp-action="Index">Back</a>
+
+<div class="row">
+    <h3>Comments</h3>
+</div>
+@foreach (var comment in Model.Trip.Comments)
+{
+    <div class="row">
+        <p>@comment.User.UserName</p>
+        <p>@comment.Content</p>
+        <p>@comment.CreateDate</p>
+    </div>
+}
+<a class="btn btn-info btn-sm" asp-controller="Comments" asp-action="Create" asp-route-id="@Model.Trip.Id">Write a comment</a>

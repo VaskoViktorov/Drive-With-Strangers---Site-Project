@@ -6,11 +6,13 @@
     using Services.Admin.Models;
     using System.Collections.Generic;
 
-    public class AdminUsersListingViewModel :IMapFrom<User>
+    public class AdminUsersListingViewModel : IMapFrom<User>
 
     {
-    public IEnumerable<AdminUserServiceListingModel> Users { get; set; }
+        public IEnumerable<AdminUserServiceListingModel> Users { get; set; }
 
-    public IEnumerable<SelectListItem> Roles { get; set; }
+       public Dictionary<string, List<string>> UserRoles { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
     }
 }

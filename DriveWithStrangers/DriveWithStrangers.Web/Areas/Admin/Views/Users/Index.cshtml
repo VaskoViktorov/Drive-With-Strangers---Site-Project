@@ -7,7 +7,8 @@
     <thead>
         <tr>
             <th>Username</th>
-            <th>E-mail</th>
+            <th>Current Roles</th>
+            <th>E-mail</th>        
             <th>Roles & Actions</th>
         </tr>
     </thead>
@@ -16,6 +17,21 @@
         {
             <tr>
                 <td>@user.Username</td>
+                <td>
+                    @if (Model.UserRoles.ContainsKey(user.Id))
+                    {
+                     var rolesInDictionary = Model.UserRoles.Where(c => c.Key == user.Id).Select(c => c.Value);
+
+                        foreach (var roles in rolesInDictionary)
+                        {
+                            foreach (var role in roles)
+                            {
+                                <small class="color-green">@role</small>
+                            }
+                           
+                        }
+                    }
+                </td>
                 <td>@user.Email</td>
                 <td>
                     <form asp-controller="Users" asp-action="AddToRole" method="post">
