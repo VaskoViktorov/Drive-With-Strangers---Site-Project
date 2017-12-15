@@ -6,7 +6,7 @@
     using Services.Models;
 
 
-    public class TripListingViewModel
+    public class TripListingViewModel : SearchTripFormModel
     {
         public IEnumerable<TripListingServiceModel> Trips { get; set; }
 

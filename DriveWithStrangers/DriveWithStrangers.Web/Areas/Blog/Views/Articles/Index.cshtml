@@ -9,30 +9,22 @@
     var nextDisabled = Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty;
 }
 <div class="row">
+    <div class="col-md-4"></div>
+   
+    <form asp-action="Search" method="get">
+        <div class="col-md-3">
+            <input asp-for="SearchText" class="form-control" placeholder="Search..."/>
+        </div>
+        <div class="col-md-3">
+            <input class="btn btn-info" type="submit" value="Search"/>
+        </div>
+    </form>  
+</div>
+<div class="row">
     <div class="col-md-2">
     </div>
     <div class="col-md-8">
-        <ul class="list-group article-list">
-            @foreach (var article in Model.Articles)
-            {
-                <li class="list-group-item text-center">
-                    <div class="row">
-                        <h2>@article.Title</h2>
-                    </div>
-                    <div class="row">
-                        <img src="@article.ImageUrl" alt="article imge" width="200" />
-                    </div>
-                    <div class="row">
-                        <p>@article.ShortContent</p>
-                    </div>
-                    <div class="row">
-                        <small class="small">published by @article.Author on @article.ReleaseDate.ToShortDateString()</small>
-                    </div>
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@article.Id" asp-route-title="@article.Title.ToFriendlyUrl()">Read more</a>
-
-                </li>
-            }
-        </ul>
+        @Html.Partial("_ArticleListingPartial", Model.Articles)
     </div>
 </div>
 

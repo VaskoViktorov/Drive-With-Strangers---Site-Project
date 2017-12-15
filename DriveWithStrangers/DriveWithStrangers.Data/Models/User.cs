@@ -16,6 +16,8 @@
         [Range(18,120)]
         public int UserAge { get; set; }
 
+        public string UserProfileImgUrl { get; set; }
+
         public List<Comment> Comments { get; set; } = new List<Comment>();
 
         public List<UserTrip> Trips { get; set; } = new List<UserTrip>();

@@ -1,0 +1,19 @@
+﻿@model SearchArticleViewModel
+@{
+    ViewData["Title"] = $"Search Results For {Model.SearchText}";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Articles.Any())
+{
+    <h3>Found Articles</h3>
+
+    <div class="row">
+        @Html.Partial("_ArticleListingPartial", Model.Articles)
+    </div>
+}
+else
+{
+    <h3>No articles found.</h3>
+}

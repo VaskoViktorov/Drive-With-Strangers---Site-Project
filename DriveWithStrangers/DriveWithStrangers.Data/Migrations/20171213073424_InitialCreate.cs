@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DriveWithStrangers.Data.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,6 +33,11 @@ namespace DriveWithStrangers.Data.Migrations
                 maxLength: 250,
                 nullable: false,
                 defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "UserProfileImgUrl",
+                table: "AspNetUsers",
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "Articles",
@@ -69,6 +74,7 @@ namespace DriveWithStrangers.Data.Migrations
                     Description = table.Column<string>(maxLength: 255, nullable: false),
                     DriverId = table.Column<string>(nullable: true),
                     EndLocation = table.Column<string>(maxLength: 100, nullable: false),
+                    ExactAddress = table.Column<string>(maxLength: 120, nullable: false),
                     PricePerPassenger = table.Column<decimal>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     StartLocation = table.Column<string>(maxLength: 50, nullable: false),
@@ -92,8 +98,10 @@ namespace DriveWithStrangers.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CommenterName = table.Column<string>(nullable: true),
                     Content = table.Column<string>(maxLength: 500, nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    EditDate = table.Column<DateTime>(nullable: false),
                     EditorUsername = table.Column<string>(nullable: true),
                     IsEdited = table.Column<bool>(nullable: false),
                     Rate = table.Column<int>(nullable: false),
@@ -222,6 +230,10 @@ namespace DriveWithStrangers.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "UserFullName",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "UserProfileImgUrl",
                 table: "AspNetUsers");
 
             migrationBuilder.CreateIndex(

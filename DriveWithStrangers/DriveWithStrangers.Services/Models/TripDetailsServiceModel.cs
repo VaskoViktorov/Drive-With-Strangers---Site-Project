@@ -11,6 +11,8 @@
 
         public User Driver { get; set; }
 
-        public List<Comment> Comments { get; set; } = new List<Comment>();    
+        public string ExactAddress { get; set; }
+
+        public List<Comment> Comments { get; set; } = new List<Comment>();     
     }
 }

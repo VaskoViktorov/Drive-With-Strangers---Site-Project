@@ -19,14 +19,19 @@
         public string StartLocation { get; set; }
 
         [Required]
-        [MinLength(TripTitleMinLength)]
-        [MaxLength(TripTitleMaxLength)]
+        [MinLength(TripLocationMinLength)]
+        [MaxLength(TripLocationMaxLength)]
         [Display(Name = "End Location")]
         public string EndLocation { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Trip Start Date")]
         public DateTime StartDate { get; set; }
+
+        [Required]
+        [MinLength(TripExactAddressMinLength)]
+        [MaxLength(TripExactAddressMaxLength)]
+        public string ExactAddress { get; set; }
 
         [Required]
         [MinLength(TripDescriptionMinLength)]

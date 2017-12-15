@@ -6,6 +6,8 @@
     {
         public DateTime StartDate { get; set; }
 
+        public string DriverId { get; set; }
+
         public bool UserIsSignedIn { get; set; }
     }
 }

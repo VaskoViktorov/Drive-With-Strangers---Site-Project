@@ -1,5 +1,4 @@
-﻿
-namespace DriveWithStrangers.Web.Controllers
+﻿namespace DriveWithStrangers.Web.Controllers
 {
     using Data.Models;
     using Microsoft.AspNetCore.Identity;
@@ -13,6 +12,8 @@ namespace DriveWithStrangers.Web.Controllers
 
     public class TripsController : Controller
     {
+        private const string ModelName = "Trip";
+
         private readonly ITripService trips;
         private readonly UserManager<User> userManager;
 
@@ -46,10 +47,13 @@ namespace DriveWithStrangers.Web.Controllers
                 model.StartLocation,
                 model.EndLocation,
                 model.StartDate,
+                model.ExactAddress,
                 model.Description,
                 model.CarModel,
                 model.PricePerPassenger,
                 model.TotalSeats, userId);
+
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataCreateCommentText, ModelName));
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -58,7 +62,7 @@ namespace DriveWithStrangers.Web.Controllers
         {
             var model = new TripDetailsViewModel()
             {
-                Trip = await this.trips.ByIdAsync(id),
+                Trip = await this.trips.DetailsByIdAsync(id),
                 Passangers = await this.trips.PassangersInTripAsync(id)
             };
 
@@ -77,7 +81,7 @@ namespace DriveWithStrangers.Web.Controllers
 
             return this.View(model);
         }
-            
+
 
         [Authorize]
         [HttpPost]
@@ -94,7 +98,7 @@ namespace DriveWithStrangers.Web.Controllers
 
             this.TempData.AddSuccessMessage("You signed up successfully!");
 
-            return this.RedirectToAction(nameof(this.Details), new {id});
+            return this.RedirectToAction(nameof(this.Details), new { id });
         }
 
         [Authorize]
@@ -112,7 +116,111 @@ namespace DriveWithStrangers.Web.Controllers
 
             this.TempData.AddWarningMessage("You signed out successfully.");
 
-            return this.RedirectToAction(nameof(this.Details), new {id});
+            return this.RedirectToAction(nameof(this.Details), new { id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            var trip = await this.trips.EditByIdAsync(id);
+
+            if (trip == null)
+            {
+                return this.NotFound();
+            }
+
+            if (userId != trip.DriverId)
+            {
+                return this.RedirectToAction(nameof(this.Details), new { id });
+            }
+
+            if (trip.TakenSeats > 0)
+            {
+                this.TempData.AddWarningMessage("You can't edit trip that already has passengers.");
+
+                return this.RedirectToAction(nameof(this.Details), new { id });
+            }
+
+            return this.View(new TripFormModel
+            {
+                Title = trip.Title,
+                StartLocation = trip.StartLocation,
+                EndLocation = trip.EndLocation,
+                StartDate = trip.StartDate,
+                ExactAddress = trip.ExactAddress,
+                Description = trip.Description,
+                CarModel = trip.CarModel,
+                PricePerPassenger = trip.PricePerPassenger,
+                TotalSeats = trip.TotalSeats,
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateModelState]
+        public async Task<IActionResult> Edit(int id, TripFormModel model)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            await this.trips.EditAsync(id,
+                model.Title,
+                model.StartLocation,
+                model.EndLocation,
+                model.StartDate,
+                model.ExactAddress,
+                model.Description,
+                model.CarModel,
+                model.PricePerPassenger,
+                model.TotalSeats,
+                userId);
+
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataEditCommentText, ModelName));
+
+            return this.RedirectToAction(nameof(this.Details), new { id });
+        }
+
+        public IActionResult Delete(int id)
+            => this.View(id);
+
+        public async Task<IActionResult> Destroy(int id)
+        {
+            await this.trips.DeleteAsync(id);
+
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataDeleteCommentText, ModelName));
+
+            return this.RedirectToAction(nameof(this.Index));
+        }
+
+
+        public async Task<IActionResult> Search(SearchTripFormModel model)
+        {
+            if (StringExtensions.IsNullOrWhiteSpace(model.SearchText))
+            {
+                this.TempData.AddWarningMessage("No search text was written.");
+
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            if (!model.SearchInEndLocations && !model.SearchInStartLocations && !model.SearchInTitles)
+            {
+                this.TempData.AddWarningMessage("No search condition was added.");
+
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            var viewModel = new SearchTripViewModel
+            {
+                SearchText = model.SearchText,
+                Trips = await this.trips.FindAsync(
+                    model.SearchText,
+                    model.SearchInStartLocations,
+                    model.SearchInEndLocations,
+                    model.SearchInTitles)
+            };
+
+            return this.View(viewModel);
         }
     }
 }

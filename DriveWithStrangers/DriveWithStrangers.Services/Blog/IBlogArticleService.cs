@@ -18,5 +18,7 @@
         Task Edit(int id, string title, string content, DateTime releaseDate, string userId, string shortContent, string imageUrl);
 
         Task Delete(int id);
+
+        Task<IEnumerable<BlogArticleListingServiceModel>> FindAsync(string searchText);
     }
 }

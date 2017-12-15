@@ -11,9 +11,10 @@
     using Services.Html;
     using System.Threading.Tasks;
 
-
     public class ArticlesController : BaseController
     {
+        private const string ModelName = "Article";
+
         private readonly IBlogArticleService articles;
         private readonly IHtmlService html;
         private readonly UserManager<User> userManager;
@@ -47,6 +48,8 @@
             var userId = this.userManager.GetUserId(this.User);
 
             await this.articles.Create(model.ReleaseDate, model.Title, model.Content, userId, model.ShortContent,model.ImageUrl);
+
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataCreateCommentText, ModelName));
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -85,6 +88,8 @@
 
             await this.articles.Edit(id, model.Title, model.Content, model.ReleaseDate, userId, model.ShortContent,model.ImageUrl);
 
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataEditCommentText, ModelName));
+
             return this.RedirectToAction(nameof(this.Index));
         }
 
@@ -95,7 +100,28 @@
         {
             await this.articles.Delete(id);
 
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataDeleteCommentText, ModelName));
+
             return this.RedirectToAction(nameof(this.Index));
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Search(SearchArticleFormModel model)
+        {
+            if(StringExtensions.IsNullOrWhiteSpace(model.SearchText))
+            {
+                this.TempData.AddWarningMessage("No search text was written.");
+
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            var viewModel = new SearchArticleViewModel
+            {
+                SearchText = model.SearchText,
+                Articles = await this.articles.FindAsync(model.SearchText)
+            };
+
+            return this.View(viewModel);
         }
     }
 }

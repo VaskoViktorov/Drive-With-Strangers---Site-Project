@@ -14,7 +14,6 @@
 
     public class BlogArticleService : IBlogArticleService
     {
-
         private readonly DriveWithStrangersDbContext db;
 
         public BlogArticleService(DriveWithStrangersDbContext db)
@@ -97,6 +96,18 @@
             this.db.Articles.Remove(article);
 
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<BlogArticleListingServiceModel>> FindAsync(string searchText)
+        {
+            searchText = searchText ?? string.Empty;
+           
+            return await this.db
+                .Articles
+                .OrderBy(c => c.ReleaseDate)
+                .Where(c => c.Title.ToLower().Contains(searchText.ToLower()))
+                .ProjectTo<BlogArticleListingServiceModel>()
+                .ToListAsync();
         }
     }
 }

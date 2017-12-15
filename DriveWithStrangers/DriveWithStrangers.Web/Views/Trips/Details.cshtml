@@ -3,13 +3,14 @@
     ViewData["Title"] = Model.Trip.Title;
 }
 
-<h2>@ViewData["Title"]</h2>
-
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 table-bordered">
+        <h2>@ViewData["Title"]</h2>
         <p>Driver: @Model.Trip.Driver.UserName</p>
         <p>Car info: @Model.Trip.CarModel</p>
         <p>Trip info: @Model.Trip.StartDate - from @Model.Trip.StartLocation to @Model.Trip.EndLocation</p>
+        <p>Start Address: @Model.Trip.ExactAddress</p>
         <p>Additional info: @Model.Trip.Description</p>
         <div class="row">
             @if (Model.Trip.PricePerPassenger == 0)
@@ -20,7 +21,6 @@
             {
                 <h5>Price per passenger: @Model.Trip.PricePerPassenger $</h5>
             }
-
         </div>
         <div class="row">
             @if (Model.Passangers.Count() == Model.Trip.TotalSeats)
@@ -42,64 +42,97 @@
                 </ul>
             }
 
-
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (Model.Trip.StartDate > DateTime.UtcNow)
-                {
-                    if ((bool)Model.UserIsSignedInCourse)
-                    {
-                        <form asp-action="SignOut" asp-route-id="@Model.Trip.Id" method="post">
-                            <input type="submit" value="Sign out" class="btn btn-primary" />
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-action="Join" asp-route-id="@Model.Trip.Id" method="post">
-                            <input type="submit" value="Join" class="btn btn-success" />
-                        </form>
-                    }
-
-                }
-                else
-                {
-                    <span>The trip has already finished.</span>
-                }
-            }
-            else
-            {
-                <span>
-                    To join a trip, please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in</a>.
-                    If you don't have account, please <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Context.Request.Path">register</a>.
-                </span>
-            }
         </div>
     </div>
 </div>
 
+<div class="row ">
+    <div class="col-md-5"></div>
+    <div class="col-md-5">
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (Model.Trip.StartDate > DateTime.UtcNow)
+            {
+                if (User.Identity.Name == Model.Trip.Driver.UserName)
+                {
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Edit</a>
+                    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
+                }
+                else if ((bool)Model.UserIsSignedInCourse)
+                {
+                    <form asp-action="SignOut" asp-route-id="@Model.Trip.Id" method="post" class="visible-lg-inline">
+                        <input type="submit" value="Sign out" class="btn btn-sm btn-primary" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Join" asp-route-id="@Model.Trip.Id" method="post" class=" visible-lg-inline">
+                        <input type="submit" value="Join" class="btn btn-sm btn-success" />
+                    </form>
+                }
 
-@if (Model.Trip.Driver.UserName == User.Identity.Name)
-{
-    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Edit</a>
-    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
-}
 
-@if (User.IsInRole(WebConstants.AdministratorRole) && Model.Trip.Driver.UserName != User.Identity.Name)
-{
-    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
-}
+            }
+            else
+            {
+                <span>The trip has already finished.</span>
+            }
+        }
+        else
+        {
+            <div class="row">
+                <span class="color-green">
+                    To join a trip, please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in.</a>
+                </span>
+            </div>
+                <div class="row">
+                    <span class="color-green">
+                        If you don't have account, please <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Context.Request.Path">register</a>.
+                    </span>
+                </div>
+        }
 
-<a class="btn btn-default btn-sm" asp-controller="Trips" asp-action="Index">Back</a>
 
-<div class="row">
-    <h3>Comments</h3>
+        @if (User.IsInRole(WebConstants.AdministratorRole) && Model.Trip.Driver.UserName != User.Identity.Name)
+        {
+            <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Trip.Id" asp-route-title="@Model.Trip.Title.ToFriendlyUrl()">Delete</a>
+        }
+        <a class="btn btn-default btn-sm" asp-controller="Trips" asp-action="Index">Back</a>
+        <h3>Comments</h3>
+    </div>
 </div>
 @foreach (var comment in Model.Trip.Comments)
 {
-    <div class="row">
-        <p>@comment.User.UserName</p>
-        <p>@comment.Content</p>
-        <p>@comment.CreateDate</p>
+    <div class="row ">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 table-bordered">
+            <h4>@comment.Title</h4>
+            <p>@Html.Raw(comment.Content)</p>
+            <small>
+                posted on @comment.CreateDate by @comment.CommenterName
+            </small>
+            @if (comment.IsEdited)
+                {
+                <small>
+                    Last edited by @comment.EditorUsername at @comment.EditDate
+
+                </small>
+            }
+
+            @if (User.IsInRole(WebConstants.AdministratorRole))
+            {
+                <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
+            }
+            @if (comment.CommenterName == User.Identity.Name || User.IsInRole(WebConstants.AdministratorRole))
+            {
+                <a class="btn btn-warning  btn-sm" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Edit</a>
+            }
+        </div>
     </div>
 }
-<a class="btn btn-info btn-sm" asp-controller="Comments" asp-action="Create" asp-route-id="@Model.Trip.Id">Write a comment</a>
+<div class="row ">
+    <div class="col-md-5"></div>
+    <div class="col-md-1">
+        <a class="btn btn-info btn-sm" asp-controller="Comments" asp-action="Create" asp-route-id="@Model.Trip.Id">Write a comment</a>
+    </div>
+</div>

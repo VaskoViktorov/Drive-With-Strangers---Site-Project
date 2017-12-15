@@ -24,9 +24,13 @@
         [Range(1,5)]
         public int Rate { get; set; }
 
+        public string CommenterName { get; set; }
+
         public bool IsEdited { get; set; }
 
         public string EditorUsername { get; set; }
+
+        public DateTime EditDate { get; set; }
 
         public string UserId { get; set; }
 

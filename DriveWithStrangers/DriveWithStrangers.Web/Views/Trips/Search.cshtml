@@ -1,0 +1,19 @@
+﻿@model SearchTripViewModel
+@{
+    ViewData["Title"] = $"Search Results For {Model.SearchText}";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Trips.Any())
+{
+    <h3>Found Trips</h3>
+
+    <div class="row">
+        @Html.Partial("_TripListingsPartial", Model.Trips)
+    </div>
+}
+else
+{
+    <h3>No trips found.</h3>
+}

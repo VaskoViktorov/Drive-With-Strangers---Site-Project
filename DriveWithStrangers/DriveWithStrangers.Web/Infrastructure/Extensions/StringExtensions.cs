@@ -9,5 +9,9 @@
     {
         public static string ToFriendlyUrl(this string text)
             => Regex.Replace(text, @"[^A-Za-z0-9_\.~]+", "-").ToLower();
+
+        public static bool IsNullOrWhiteSpace(string text)
+            => string.IsNullOrWhiteSpace(text);
+
     }
 }

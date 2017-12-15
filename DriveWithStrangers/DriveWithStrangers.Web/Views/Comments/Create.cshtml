@@ -1,13 +1,12 @@
-﻿@model TripFormModel
+﻿@model CommentFormModel
 @{
-    ViewData["Title"] = "Create Trip";
+    ViewData["Title"] = "Write comment";
 }
-
 <h2>@ViewData["Title"]</h2>
 
 <div class="row">
-<div class="col-md-6">
-    @Html.Partial("_TripForm", Model)
+    <div class="col-md-6">
+        @Html.Partial("_CommentForm", Model)
     </div>
 </div>
 

@@ -5,7 +5,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class ArticleListingViewModel
+    public class ArticleListingViewModel : SearchArticleFormModel
     {
 
         public IEnumerable<BlogArticleListingServiceModel> Articles { get; set; }

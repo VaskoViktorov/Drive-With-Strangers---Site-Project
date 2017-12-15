@@ -74,7 +74,7 @@
                 routes.MapRoute(
                     name: "editArticle",
                     template: "blog/articles/edit/{id}",
-                    defaults: new { area = "Blog", controller = "Articles", action = "Edit" });
+                    defaults: new { area = "Blog", controller = "Articles", action = "EditAsync" });
 
                 routes.MapRoute(
                     name: "deleteArticle",

@@ -12,6 +12,7 @@
             string startLocation,
             string endLocation,
             DateTime startDate,
+            string exactAddress,
             string description,
             string carModel,
             decimal pricePerPassenger,
@@ -22,7 +23,7 @@
 
         Task<int> TotalAsync();
 
-        Task<TripDetailsServiceModel> ByIdAsync(int id);
+        Task<TripDetailsServiceModel> DetailsByIdAsync(int id);
 
         Task<bool> SignOutUserAsync(string userId, int tripId);
 
@@ -31,5 +32,28 @@
         Task<bool> UserIsSignedForTripAsync(string userId, int tripId);
 
         Task<IEnumerable<PassangerInTripServiceModel>> PassangersInTripAsync(int tripId);
+
+        Task<TripEditServiceModel> EditByIdAsync(int id);
+
+        Task EditAsync(
+            int id,
+            string title,
+            string startLocation, 
+            string endLocation, 
+            DateTime startDate,
+            string exactAddress,
+            string description,
+            string carModel,
+            decimal pricePerPassenger,
+            int totalSeats,
+            string userId);
+
+        Task DeleteAsync(int id);
+
+        Task<IEnumerable<TripListingServiceModel>> FindAsync(
+            string searchText,
+            bool startLocation,
+            bool endLocation,
+            bool title);
     }
 }

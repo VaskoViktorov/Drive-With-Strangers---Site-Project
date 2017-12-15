@@ -58,11 +58,15 @@ namespace DriveWithStrangers.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CommenterName");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(500);
 
                     b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("EditDate");
 
                     b.Property<string>("EditorUsername");
 
@@ -105,6 +109,10 @@ namespace DriveWithStrangers.Data.Migrations
                     b.Property<string>("EndLocation")
                         .IsRequired()
                         .HasMaxLength(100);
+
+                    b.Property<string>("ExactAddress")
+                        .IsRequired()
+                        .HasMaxLength(120);
 
                     b.Property<decimal>("PricePerPassenger");
 
@@ -170,6 +178,8 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("UserProfileImgUrl");
 
                     b.HasKey("Id");
 

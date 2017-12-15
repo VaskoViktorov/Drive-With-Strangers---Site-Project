@@ -1,4 +1,6 @@
-﻿namespace DriveWithStrangers.Services.Implementations
+﻿using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators.Internal;
+
+namespace DriveWithStrangers.Services.Implementations
 {
     using AutoMapper.QueryableExtensions;
     using Data;
@@ -26,6 +28,7 @@
             string startLocation,
             string endLocation,
             DateTime startDate,
+            string exactAddress,
             string description,
             string carModel,
             decimal pricePerPassenger,
@@ -38,6 +41,7 @@
                 StartLocation = startLocation,
                 EndLocation = endLocation,
                 StartDate = startDate,
+                ExactAddress = exactAddress,
                 Description = description,
                 CarModel = carModel,
                 PricePerPassenger = pricePerPassenger,
@@ -52,6 +56,7 @@
         public async Task<IEnumerable<TripListingServiceModel>> AllAsync(int page = 1)
             => await this.db
                 .Trips
+                //.Where(t => t.StartDate > DateTime.UtcNow)
                 .OrderByDescending(a => a.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
@@ -63,8 +68,8 @@
                 .Trips
                 .CountAsync();
 
-        public async Task<TripDetailsServiceModel> ByIdAsync(int id)
-            => await this.db
+        public async Task<TripDetailsServiceModel> DetailsByIdAsync(int id)
+            =>  await this.db
                 .Trips
                 .Where(a => a.Id == id)
                 .ProjectTo<TripDetailsServiceModel>()
@@ -74,7 +79,12 @@
         {
             var tripInfo = await this.GetTripInfoAsync(userId, tripId);
 
-            if (tripInfo == null || tripInfo.UserIsSignedIn)
+            if (tripInfo == null)
+            {
+                return false;
+            }
+
+            if (userId == tripInfo.DriverId || tripInfo.UserIsSignedIn)
             {
                 return false;
             }
@@ -94,9 +104,16 @@
 
         public async Task<bool> SignOutUserAsync(string userId, int tripId)
         {
-            var courseInfo = await this.GetTripInfoAsync(userId, tripId);
+            var tripInfo = await this.GetTripInfoAsync(userId, tripId);
 
-            if (courseInfo == null || courseInfo.StartDate < DateTime.UtcNow || !courseInfo.UserIsSignedIn)
+            if (tripInfo == null)
+            {
+                return false;
+            }
+
+            if (tripInfo.StartDate < DateTime.UtcNow ||
+                !tripInfo.UserIsSignedIn ||
+                userId == tripInfo.DriverId)
             {
                 return false;
             }
@@ -123,6 +140,56 @@
                 .ProjectTo<PassangerInTripServiceModel>()
                 .ToListAsync();
 
+        public async Task<TripEditServiceModel> EditByIdAsync(int id)
+            => await this.db
+                .Trips
+                .Where(a => a.Id == id)
+                .ProjectTo<TripEditServiceModel>()
+                .FirstOrDefaultAsync();
+
+        public async Task EditAsync(int id, string title, string startLocation, string endLocation, DateTime startDate,
+            string exactAddress, string description,
+            string carModel, decimal pricePerPassenger, int totalSeats, string userId)
+        {
+            var trip = await this.db.Trips.FindAsync(id);
+
+            if (trip == null)
+            {
+                return;
+            }
+
+            if (trip.DriverId != userId)
+            {
+                return;
+            }
+
+            trip.Title = title;
+            trip.StartLocation = startLocation;
+            trip.EndLocation = endLocation;
+            trip.StartDate = startDate;
+            trip.ExactAddress = exactAddress;
+            trip.Description = description;
+            trip.CarModel = carModel;
+            trip.PricePerPassenger = pricePerPassenger;
+            trip.TotalSeats = totalSeats;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var trip = await this.db.Trips.FindAsync(id);
+
+            if (trip == null)
+            {
+                return;
+            }
+
+            this.db.Trips.Remove(trip);
+
+            await this.db.SaveChangesAsync();
+        }
+
         private async Task<TripInfo> GetTripInfoAsync(string userId, int tripId)
             => await this.db
                 .Trips
@@ -130,8 +197,51 @@
                 .Select(c => new TripInfo()
                 {
                     StartDate = c.StartDate,
+                    DriverId = c.DriverId,
                     UserIsSignedIn = c.Passengers.Any(s => s.UserId == userId)
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<TripListingServiceModel>> FindAsync(string searchText, bool startLocation, bool endLocation, bool title)
+        {
+            searchText.ToLower();
+
+            var result = await this.db
+                .Trips
+                .Where(t => t.StartDate > DateTime.UtcNow)
+                .ProjectTo<TripListingServiceModel>()
+                .ToListAsync();
+            
+            if (startLocation && endLocation && title)
+            {
+                result = result.Where(x => x.StartLocation.ToLower().Contains(searchText) || x.EndLocation.ToLower().Contains(searchText) || x.Title.ToLower().Contains(searchText)).ToList();
+            }
+            else if (startLocation && endLocation)
+            {
+                result = result.Where(x => x.StartLocation.ToLower().Contains(searchText) || x.EndLocation.ToLower().Contains(searchText)).ToList();
+            }
+            else if (startLocation && title)
+            {
+                result = result.Where(x => x.StartLocation.ToLower().Contains(searchText) || x.Title.ToLower().Contains(searchText)).ToList();
+            }
+            else if (endLocation && title)
+            {
+                result = result.Where(x => x.EndLocation.ToLower().Contains(searchText) || x.Title.ToLower().Contains(searchText)).ToList();
+            }
+            else if (startLocation)
+            {
+                result = result.Where(x => x.StartLocation.ToLower().Contains(searchText)).ToList();
+            }
+            else if (endLocation)
+            {
+                result = result.Where(x => x.EndLocation.ToLower().Contains(searchText)).ToList();
+            }
+            else if (title)
+            {
+                result = result.Where(x => x.Title.ToLower().Contains(searchText)).ToList();
+            }
+
+            return result;
+        }
     }
 }
