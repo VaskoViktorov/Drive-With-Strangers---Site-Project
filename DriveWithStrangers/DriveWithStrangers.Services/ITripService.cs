@@ -33,6 +33,10 @@
 
         Task<IEnumerable<PassangerInTripServiceModel>> PassangersInTripAsync(int tripId);
 
+        Task<IEnumerable<TripListingServiceModel>> TripsByDriverIdAsync(string id, int page = 1);
+
+        Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerUserIdAsync(string id, int page = 1);
+
         Task<TripEditServiceModel> EditByIdAsync(int id);
 
         Task EditAsync(

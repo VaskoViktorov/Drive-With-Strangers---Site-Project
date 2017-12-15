@@ -26,15 +26,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DriveWithStrangers.Web</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DriveWithStrangers</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="Blog" asp-controller="Articles" asp-action="Index">Blog</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">View Trips</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Trips" asp-action="Index">View Trips</a></li>
                     <li><a asp-area="" asp-controller="Trips" asp-action="Create">Create Trip</a></li>
                     @if (User.IsInRole(WebConstants.AdministratorRole))
                     {
@@ -66,7 +65,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - Learning System</p>
+            <p>&copy; 2017 - DriveWithStrangers</p>
         </footer>
     </div>
     <environment include="Development">

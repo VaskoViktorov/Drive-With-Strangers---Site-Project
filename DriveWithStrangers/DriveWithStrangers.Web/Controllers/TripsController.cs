@@ -120,6 +120,33 @@
         }
 
         [Authorize]
+        public async Task<IActionResult> DriverTrips(string id, int page = 1)
+            => this.View(new TripListingViewModel
+            {
+                Trips = await this.trips.TripsByDriverIdAsync(id,page),
+                TotalTrips = await this.trips.TotalAsync(),
+                CurrentPage = page
+            });
+
+        [Authorize]
+        public async Task<IActionResult> PassagerTrips(string id, int page = 1)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (userId != id)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            return this.View(new TripListingViewModel
+            {
+                Trips = await this.trips.TripsAsPassagerUserIdAsync(id, page),
+                TotalTrips = await this.trips.TotalAsync(),
+                CurrentPage = page
+            });
+        }
+
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var userId = this.userManager.GetUserId(this.User);

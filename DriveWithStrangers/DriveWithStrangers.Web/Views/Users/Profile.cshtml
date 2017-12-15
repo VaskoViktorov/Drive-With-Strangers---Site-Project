@@ -1,0 +1,20 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h2>@Model.Username</h2>
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="@Model.UserProfileImgUrl" alt="profile pic" />
+        <p>
+            <b>Email:</b> <a>@Model.Email</a>
+        </p>
+        <p><b>Phone:</b> @Model.Phone</p>
+        <p><b>Full Name:</b> @Model.UserFullName</p>
+        <p><b>Age:</b> @Model.UserAge</p>
+        <a class="btn btn-md btn-info" asp-controller="Trips" asp-action="DriverTrips" asp-route-id="@Model.Id">User trips</a>
+    </div>
+</div>
+

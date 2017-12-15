@@ -127,6 +127,26 @@ namespace DriveWithStrangers.Services.Implementations
             return true;
         }
 
+        public async Task<IEnumerable<TripListingServiceModel>> TripsByDriverIdAsync(string id, int page = 1)
+            => await this.db
+                .Trips
+                .Where(t => t.DriverId == id)
+                .OrderByDescending(a => a.StartDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ProjectTo<TripListingServiceModel>()
+                .ToListAsync();
+
+        public async Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerUserIdAsync(string id, int page = 1)
+            => await this.db
+                .Trips
+                .Where(t => t.Passengers.Select(u => u.UserId).Contains(id))
+                .OrderByDescending(a => a.StartDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ProjectTo<TripListingServiceModel>()
+                .ToListAsync();
+
         public async Task<bool> UserIsSignedForTripAsync(string userId, int tripId)
             => await this.db
                 .Trips
@@ -190,18 +210,6 @@ namespace DriveWithStrangers.Services.Implementations
             await this.db.SaveChangesAsync();
         }
 
-        private async Task<TripInfo> GetTripInfoAsync(string userId, int tripId)
-            => await this.db
-                .Trips
-                .Where(t => t.Id == tripId)
-                .Select(c => new TripInfo()
-                {
-                    StartDate = c.StartDate,
-                    DriverId = c.DriverId,
-                    UserIsSignedIn = c.Passengers.Any(s => s.UserId == userId)
-                })
-                .FirstOrDefaultAsync();
-
         public async Task<IEnumerable<TripListingServiceModel>> FindAsync(string searchText, bool startLocation, bool endLocation, bool title)
         {
             searchText.ToLower();
@@ -243,5 +251,17 @@ namespace DriveWithStrangers.Services.Implementations
 
             return result;
         }
+
+        private async Task<TripInfo> GetTripInfoAsync(string userId, int tripId)
+            => await this.db
+                .Trips
+                .Where(t => t.Id == tripId)
+                .Select(c => new TripInfo()
+                {
+                    StartDate = c.StartDate,
+                    DriverId = c.DriverId,
+                    UserIsSignedIn = c.Passengers.Any(s => s.UserId == userId)
+                })
+                .FirstOrDefaultAsync();
     }
 }
