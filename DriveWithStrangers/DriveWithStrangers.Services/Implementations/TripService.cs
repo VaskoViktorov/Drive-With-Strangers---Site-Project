@@ -219,7 +219,7 @@ namespace DriveWithStrangers.Services.Implementations
                 .Where(t => t.StartDate > DateTime.UtcNow)
                 .ProjectTo<TripListingServiceModel>()
                 .ToListAsync();
-            
+
             if (startLocation && endLocation && title)
             {
                 result = result.Where(x => x.StartLocation.ToLower().Contains(searchText) || x.EndLocation.ToLower().Contains(searchText) || x.Title.ToLower().Contains(searchText)).ToList();

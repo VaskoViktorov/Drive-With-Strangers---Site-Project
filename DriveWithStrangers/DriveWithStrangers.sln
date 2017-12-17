@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveWithStrangers.Web", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveWithStrangers.Data", "DriveWithStrangers.Data\DriveWithStrangers.Data.csproj", "{F9778799-E9E1-4451-AC6E-E54377B211B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveWithStrangers.Services", "DriveWithStrangers.Services\DriveWithStrangers.Services.csproj", "{46F2F27F-FDD3-45BA-B089-74761452F250}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveWithStrangers.Services", "DriveWithStrangers.Services\DriveWithStrangers.Services.csproj", "{46F2F27F-FDD3-45BA-B089-74761452F250}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveWithStrangers.Common", "DriveWithStrangers.Common\DriveWithStrangers.Common.csproj", "{BDB0CBE5-6612-409B-B426-DAF1D1CDC648}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveWithStrangers.Common", "DriveWithStrangers.Common\DriveWithStrangers.Common.csproj", "{BDB0CBE5-6612-409B-B426-DAF1D1CDC648}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveWithStrangers.Test", "DriveWithStrangers.Test\DriveWithStrangers.Test.csproj", "{23DADCDA-CE54-44E5-B198-61C81313E960}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BDB0CBE5-6612-409B-B426-DAF1D1CDC648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB0CBE5-6612-409B-B426-DAF1D1CDC648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB0CBE5-6612-409B-B426-DAF1D1CDC648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23DADCDA-CE54-44E5-B198-61C81313E960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23DADCDA-CE54-44E5-B198-61C81313E960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23DADCDA-CE54-44E5-B198-61C81313E960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23DADCDA-CE54-44E5-B198-61C81313E960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
