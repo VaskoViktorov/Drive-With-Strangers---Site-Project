@@ -11,7 +11,7 @@ using System;
 namespace DriveWithStrangers.Data.Migrations
 {
     [DbContext(typeof(DriveWithStrangersDbContext))]
-    [Migration("20171213073424_InitialCreate")]
+    [Migration("20171217131632_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,8 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<bool>("IsEdited");
 
+                    b.Property<bool>("IsRateComment");
+
                     b.Property<int>("Rate");
 
                     b.Property<string>("Title")
@@ -109,7 +111,7 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<string>("EndLocation")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ExactAddress")
                         .IsRequired()

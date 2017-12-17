@@ -72,6 +72,8 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<bool>("IsEdited");
 
+                    b.Property<bool>("IsRateComment");
+
                     b.Property<int>("Rate");
 
                     b.Property<string>("Title")
@@ -108,7 +110,7 @@ namespace DriveWithStrangers.Data.Migrations
 
                     b.Property<string>("EndLocation")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(50);
 
                     b.Property<string>("ExactAddress")
                         .IsRequired()

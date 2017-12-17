@@ -21,8 +21,10 @@
 
         public DateTime CreateDate { get; set; }
 
-        [Range(1,5)]
-        public int Rate { get; set; }
+        [Range(1, 5)]
+        public int Rate { get; set; } = 0;
+
+        public bool IsRateComment { get; set; }
 
         public string CommenterName { get; set; }
 

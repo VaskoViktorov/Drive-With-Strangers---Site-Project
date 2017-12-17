@@ -52,6 +52,27 @@ namespace DriveWithStrangers.Web.Controllers
         }
 
         [Authorize]
+        public IActionResult RateCommentCreate()
+            => this.View();
+
+        [HttpPost]
+        [Authorize]
+        [ValidateModelState]
+        public async Task<IActionResult> RateCommentCreate(int id, RateCommentFormModel model)
+        {
+            model.Content = this.html.Sanitize(model.Content);
+
+            var userId = this.userManager.GetUserId(this.User);
+            var userName = this.userManager.GetUserName(this.User);
+
+            await this.comments.CreateRateCommentAsync(model.Title, model.Content, model.Rate, userId, userName, id);
+
+            this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataCreateCommentText, ModelName));
+
+            return this.RedirectToAction("DetailsRate", "Trips", new { id });
+        }
+
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var userId = this.userManager.GetUserId(this.User);
@@ -63,7 +84,7 @@ namespace DriveWithStrangers.Web.Controllers
                 return this.NotFound();
             }
 
-            if (userId != comment.UserId)
+            if (userId != comment.UserId && !this.User.IsInRole(WebConstants.AdministratorRole))
             {
                 return this.RedirectToAction("Details", "Trips", new { id = comment.TripId });
             }
@@ -82,7 +103,7 @@ namespace DriveWithStrangers.Web.Controllers
         {
             var userId = this.userManager.GetUserId(this.User);
             var username = this.userManager.GetUserName(this.User);
-
+     
             await this.comments.EditAsync(id,
                 model.Title,
                 model.Content,

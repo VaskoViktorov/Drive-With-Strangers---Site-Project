@@ -4,9 +4,9 @@
 
     public interface IUserService
     {
-        UserModel ById(string id);
+        UserDetailsServiceModel ById(string id);
 
-        UserModel UserDetailsById(string id);
+        UserEditServiceModel UserDetailsById(string id);
 
         void Edit(string id, string email, string userFullName, int userAge, string phone,string userProfileImgUrl);
 

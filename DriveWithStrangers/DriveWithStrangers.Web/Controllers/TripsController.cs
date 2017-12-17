@@ -82,6 +82,30 @@
             return this.View(model);
         }
 
+        public async Task<IActionResult> DetailsRate(int id)
+        {
+            var model = new TripWithRateCommentsDetailsViewModel()
+            {
+                Trip = await this.trips.DetailsWithRateCommentsByIdAsync(id),
+                Passangers = await this.trips.PassangersInTripAsync(id)
+            };
+
+            if (model.Trip == null)
+            {
+                return this.NotFound();
+            }
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.userManager.GetUserId(this.User);
+
+                model.UserIsSignedInCourse =
+                    await this.trips.UserIsSignedForTripAsync(userId, id);
+            }
+
+            return this.View(model);
+        }
+
 
         [Authorize]
         [HttpPost]
@@ -141,6 +165,24 @@
             return this.View(new TripListingViewModel
             {
                 Trips = await this.trips.TripsAsPassagerUserIdAsync(id, page),
+                TotalTrips = await this.trips.TotalAsync(),
+                CurrentPage = page
+            });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> TripsForRate(string id, int page = 1)
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            if (userId != id)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            return this.View(new TripListingViewModel
+            {
+                Trips = await this.trips.TripsAsPassagerForRateAsync(id, page),
                 TotalTrips = await this.trips.TotalAsync(),
                 CurrentPage = page
             });

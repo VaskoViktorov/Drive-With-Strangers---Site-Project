@@ -1,4 +1,4 @@
-﻿@model UserModel
+﻿@model UserDetailsServiceModel
 @{
     ViewData["Title"] = "Profile";
 }
@@ -9,12 +9,13 @@
 <div class="row">
     <div class="col-md-5">
         <img src="@Model.UserProfileImgUrl" alt="profile pic"/>
-        <p><b>Email:</b> <a>@Model.Email</a>
-        </p>
+        <p><b>Rate:</b> <a>@Model.UserRate</a></p>
+        <p><b>Email:</b> <a>@Model.Email</a></p>
         <p><b>Phone:</b> @Model.Phone</p>
         <p><b>Full Name:</b> @Model.UserFullName</p>
         <p><b>Age:</b> @Model.UserAge</p>
         <a class="btn btn-md btn-info" asp-controller="Trips" asp-action="DriverTrips" asp-route-id="@Model.Id">My trips</a>
         <a class="btn btn-md btn-info" asp-controller="Trips" asp-action="PassagerTrips" asp-route-id="@Model.Id">Joined trips</a>
+        <a class="btn btn-md btn-info" asp-controller="Trips" asp-action="TripsForRate" asp-route-id="@Model.Id">Rate trips</a>
     </div>
 </div>

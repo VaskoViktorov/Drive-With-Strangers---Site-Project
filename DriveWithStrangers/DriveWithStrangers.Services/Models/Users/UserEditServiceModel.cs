@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace DriveWithStrangers.Services.Models.Users
+﻿namespace DriveWithStrangers.Services.Models.Users
 {
     using Common.Mapping;
     using Data.Models;
 
-    public class UserModel : IMapFrom<User>
+    public class UserEditServiceModel : IMapFrom<User>
     {
         public string Id { get; set; }
 
@@ -20,5 +18,7 @@ namespace DriveWithStrangers.Services.Models.Users
         public int UserAge { get; set; }
 
         public string UserProfileImgUrl { get; set; }
+
+     
     }
 }

@@ -25,6 +25,8 @@
 
         Task<TripDetailsServiceModel> DetailsByIdAsync(int id);
 
+        Task<TripWithRateCommentsDetailsServiceModel> DetailsWithRateCommentsByIdAsync(int id);
+
         Task<bool> SignOutUserAsync(string userId, int tripId);
 
         Task<bool> JoinAsync(string userId, int tripId);
@@ -36,6 +38,8 @@
         Task<IEnumerable<TripListingServiceModel>> TripsByDriverIdAsync(string id, int page = 1);
 
         Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerUserIdAsync(string id, int page = 1);
+
+        Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerForRateAsync(string id, int page = 1);
 
         Task<TripEditServiceModel> EditByIdAsync(int id);
 

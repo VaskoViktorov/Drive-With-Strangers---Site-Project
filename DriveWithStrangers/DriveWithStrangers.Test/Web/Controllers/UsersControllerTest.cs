@@ -65,7 +65,7 @@
             var userService = new Mock<IUserService>();
             userService
                 .Setup(u => u.UserDetailsById(It.Is<string>(id => id == userId)))
-                .Returns(new UserModel { Username = username, UserAge = userAge, UserFullName = userFullName, Email = userEmail});
+                .Returns(new UserEditServiceModel { Username = username, UserAge = userAge, UserFullName = userFullName, Email = userEmail});
 
             var controller = new UsersController(
                userManager.Object, userService.Object);
@@ -80,7 +80,7 @@
                 .Subject
                 .Model
                 .Should()
-                .Match(m => m.As<UserModel>().Username == username);
+                .Match(m => m.As<UserEditServiceModel>().Username == username);
         }
 
         private Mock<UserManager<User>> GetUserManagerMock()

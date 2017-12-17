@@ -56,7 +56,7 @@ namespace DriveWithStrangers.Services.Implementations
         public async Task<IEnumerable<TripListingServiceModel>> AllAsync(int page = 1)
             => await this.db
                 .Trips
-                //.Where(t => t.StartDate > DateTime.UtcNow)
+                .Where(t => t.StartDate > DateTime.UtcNow)
                 .OrderByDescending(a => a.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
@@ -74,6 +74,15 @@ namespace DriveWithStrangers.Services.Implementations
                 .Where(a => a.Id == id)
                 .ProjectTo<TripDetailsServiceModel>()
                 .FirstOrDefaultAsync();
+
+        public async Task<TripWithRateCommentsDetailsServiceModel> DetailsWithRateCommentsByIdAsync(int id)
+            => await this.db
+                .Trips
+                .Where(a => a.Id == id)
+                .ProjectTo<TripWithRateCommentsDetailsServiceModel>()
+                .FirstOrDefaultAsync();
+
+        
 
         public async Task<bool> JoinAsync(string userId, int tripId)
         {
@@ -141,6 +150,16 @@ namespace DriveWithStrangers.Services.Implementations
             => await this.db
                 .Trips
                 .Where(t => t.Passengers.Select(u => u.UserId).Contains(id))
+                .OrderByDescending(a => a.StartDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ProjectTo<TripListingServiceModel>()
+                .ToListAsync();
+
+        public async Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerForRateAsync(string id, int page = 1)
+            => await this.db
+                .Trips
+                .Where(t => t.Passengers.Select(u => u.UserId).Contains(id) && t.StartDate< DateTime.UtcNow)
                 .OrderByDescending(a => a.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)

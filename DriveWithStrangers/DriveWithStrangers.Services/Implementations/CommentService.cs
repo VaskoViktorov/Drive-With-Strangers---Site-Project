@@ -35,6 +35,25 @@
             await this.db.SaveChangesAsync();
         }
 
+        public async Task CreateRateCommentAsync(string title, string content, int rate, string userId, string userName, int id)
+        {
+            var comment = new Comment
+            {
+                Title = title,
+                Content = content,
+                CreateDate = DateTime.UtcNow,
+                Rate = rate,
+                IsRateComment = true,
+                UserId = userId,
+                CommenterName = userName,
+                TripId = id
+            };
+
+            this.db.Add(comment);
+
+            await this.db.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
             var comment = await this.db.Comments.FindAsync(id);
@@ -61,11 +80,6 @@
             var comment = await this.db.Comments.FindAsync(id);
 
             if (comment == null)
-            {
-                return;
-            }
-
-            if (comment.UserId != userId)
             {
                 return;
             }
