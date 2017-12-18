@@ -1,6 +1,6 @@
 ﻿namespace DriveWithStrangers.Web.Models.Trips
 {
-    using Services.Models;
+    using Services.Models.Trips;
     using System.Collections.Generic;
 
     public class SearchTripViewModel

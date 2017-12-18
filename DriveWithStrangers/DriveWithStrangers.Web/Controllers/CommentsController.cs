@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
-using DriveWithStrangers.Services.Html;
-using DriveWithStrangers.Web.Infrastructure.Extensions;
-using DriveWithStrangers.Web.Models.Comments;
-using DriveWithStrangers.Web.Models.Trips;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace DriveWithStrangers.Web.Controllers
+﻿namespace DriveWithStrangers.Web.Controllers
 {
-    using System.Threading.Tasks;
+    using Services.Html;
+    using Infrastructure.Extensions;
+    using Models.Comments;
+    using System.Collections.Generic;
     using Data.Models;
-    using Services;
     using Infrastructure.Filters;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Services;
+    using System.Threading.Tasks;
 
     public class CommentsController : Controller
     {
@@ -65,7 +62,10 @@ namespace DriveWithStrangers.Web.Controllers
             var userId = this.userManager.GetUserId(this.User);
             var userName = this.userManager.GetUserName(this.User);
 
-            await this.comments.CreateRateCommentAsync(model.Title, model.Content, model.Rate, userId, userName, id);
+            if (!await this.comments.CreateRateCommentAsync(model.Title, model.Content, model.Rate, userId, userName, id))
+            {
+                return this.NotFound();
+            }
 
             this.TempData.AddSuccessMessage(string.Format(WebConstants.TempDataCreateCommentText, ModelName));
 

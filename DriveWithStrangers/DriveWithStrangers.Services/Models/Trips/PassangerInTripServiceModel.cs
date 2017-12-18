@@ -1,4 +1,4 @@
-﻿namespace DriveWithStrangers.Services.Models
+﻿namespace DriveWithStrangers.Services.Models.Trips
 {
     using Common.Mapping;
     using Data.Models;

@@ -1,13 +1,14 @@
 ﻿namespace DriveWithStrangers.Services.Implementations
 {
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
-    using System;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using AutoMapper.QueryableExtensions;
-    using Models.Comments;
     using Microsoft.EntityFrameworkCore;
+    using Models.Trips;
+    using Models.Comments;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CommentService : ICommentService
     {
@@ -20,6 +21,7 @@
 
         public async Task CreateAsync(string title, string content, string userId, string userName, int id)
         {
+            
             var comment = new Comment
             {
                 Title = title,
@@ -35,8 +37,15 @@
             await this.db.SaveChangesAsync();
         }
 
-        public async Task CreateRateCommentAsync(string title, string content, int rate, string userId, string userName, int id)
+        public async Task<bool> CreateRateCommentAsync(string title, string content, int rate, string userId, string userName, int id)
         {
+            var trip = this.db.Trips.Where(t => t.Id == id).ProjectTo<TripWithRateCommentsDetailsServiceModel>();
+
+            if (trip.Any(t => t.Comments.Select(c => c.UserId).Contains(userId)))
+            {
+                return false;
+            }
+
             var comment = new Comment
             {
                 Title = title,
@@ -52,6 +61,8 @@
             this.db.Add(comment);
 
             await this.db.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task DeleteAsync(int id)

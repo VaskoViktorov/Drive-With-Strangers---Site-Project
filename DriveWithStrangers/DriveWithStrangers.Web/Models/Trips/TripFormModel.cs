@@ -31,6 +31,7 @@
         [Required]
         [MinLength(TripExactAddressMinLength)]
         [MaxLength(TripExactAddressMaxLength)]
+        [Display(Name = "Exact Address")]
         public string ExactAddress { get; set; }
 
         [Required]

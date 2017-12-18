@@ -1,14 +1,15 @@
 ﻿namespace DriveWithStrangers.Web.Controllers
 {
     using Data.Models;
+    using Infrastructure.Extensions;
+    using Infrastructure.Filters;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Models.Trips;
     using Services;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Infrastructure.Filters;
-    using Microsoft.AspNetCore.Authorization;
-    using Infrastructure.Extensions;
 
     public class TripsController : Controller
     {
@@ -82,9 +83,10 @@
             return this.View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> DetailsRate(int id)
         {
-            var model = new TripWithRateCommentsDetailsViewModel()
+            var model = new TripWithRateCommentsDetailsViewModel
             {
                 Trip = await this.trips.DetailsWithRateCommentsByIdAsync(id),
                 Passangers = await this.trips.PassangersInTripAsync(id)
@@ -94,13 +96,18 @@
             {
                 return this.NotFound();
             }
-
+                   
             if (this.User.Identity.IsAuthenticated)
             {
                 var userId = this.userManager.GetUserId(this.User);
 
                 model.UserIsSignedInCourse =
                     await this.trips.UserIsSignedForTripAsync(userId, id);
+
+                if (!model.Passangers.Any(t => t.Id == userId))
+                {
+                    return this.RedirectToAction(nameof(this.Details), new { id });
+                }
             }
 
             return this.View(model);
@@ -147,7 +154,7 @@
         public async Task<IActionResult> DriverTrips(string id, int page = 1)
             => this.View(new TripListingViewModel
             {
-                Trips = await this.trips.TripsByDriverIdAsync(id,page),
+                Trips = await this.trips.TripsByDriverIdAsync(id, page),
                 TotalTrips = await this.trips.TotalAsync(),
                 CurrentPage = page
             });

@@ -4,6 +4,7 @@
     using Data;
     using Models.Users;
     using System.Linq;
+    using Models.Trips;
 
     public class UserService : IUserService
     {
@@ -22,10 +23,10 @@
                 .ProjectTo<UserDetailsServiceModel>()
                 .FirstOrDefault();
 
-            var trips = this.db.Trips.Where(t => t.DriverId == id && t.Comments.Any());
+            var trips = this.db.Trips.Where(t => t.DriverId == id && t.Comments.Any(c => c.IsRateComment)).ProjectTo<TripWithRateCommentsDetailsServiceModel>();
 
 
-            if (trips.Any(t => t.Comments.Any(c => c.IsRateComment)))
+            if (trips.Any(t => t.Comments.Any(c => c.Rate > 0)))
             {
                 user.UserRate = trips.Select(t => t.Comments.Where(c => c.IsRateComment).Select(c => c.Rate).Average()).Average();
             }

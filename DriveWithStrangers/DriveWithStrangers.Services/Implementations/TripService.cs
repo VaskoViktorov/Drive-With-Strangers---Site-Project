@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators.Internal;
-
-namespace DriveWithStrangers.Services.Implementations
+﻿namespace DriveWithStrangers.Services.Implementations
 {
     using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
     using Microsoft.EntityFrameworkCore;
-    using Models;
+    using Models.Trips;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -69,21 +67,34 @@ namespace DriveWithStrangers.Services.Implementations
                 .CountAsync();
 
         public async Task<TripDetailsServiceModel> DetailsByIdAsync(int id)
-            =>  await this.db
+        {
+            var result = await this.db
                 .Trips
                 .Where(a => a.Id == id)
                 .ProjectTo<TripDetailsServiceModel>()
                 .FirstOrDefaultAsync();
 
+            result.Comments = result.Comments.Where(c => !c.IsRateComment).ToList();
+
+            return result;
+        } 
+
         public async Task<TripWithRateCommentsDetailsServiceModel> DetailsWithRateCommentsByIdAsync(int id)
-            => await this.db
+        {
+          var result= await  this.db
                 .Trips
                 .Where(a => a.Id == id)
                 .ProjectTo<TripWithRateCommentsDetailsServiceModel>()
                 .FirstOrDefaultAsync();
 
-        
+            if (result.Comments.Any(c => c.IsRateComment))
+            {
+                result.OverallRate = result.Comments.Where(c => c.IsRateComment).Select(c => c.Rate).Average();
+            }
 
+            return result;
+        }
+             
         public async Task<bool> JoinAsync(string userId, int tripId)
         {
             var tripInfo = await this.GetTripInfoAsync(userId, tripId);

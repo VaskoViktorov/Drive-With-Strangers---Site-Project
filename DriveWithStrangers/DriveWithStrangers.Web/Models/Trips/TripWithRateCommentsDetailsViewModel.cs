@@ -1,8 +1,8 @@
-﻿using DriveWithStrangers.Services.Models;
-using System.Collections.Generic;
-
-namespace DriveWithStrangers.Web.Models.Trips
+﻿namespace DriveWithStrangers.Web.Models.Trips
 {
+    using Services.Models.Trips;
+    using System.Collections.Generic;
+
     public class TripWithRateCommentsDetailsViewModel
     {
         public TripWithRateCommentsDetailsServiceModel Trip { get; set; }

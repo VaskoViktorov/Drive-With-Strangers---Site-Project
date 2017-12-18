@@ -7,8 +7,18 @@
     <div class="col-md-3"></div>
     <div class="col-md-6 table-bordered">
         <h2>@ViewData["Title"]</h2>
-        <p>Trip Overall Rate: @Model.Trip.OverallRate</p>
-        <p>Driver: <li><a asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
+        <p>
+            Trip Rate:
+            @for (var i = 0; i < (int)Math.Ceiling(Model.Trip.OverallRate); i++)
+            {
+                <span class="glyphicon glyphicon-star color-yellow"></span>
+            }
+            @for (var i = 0; i < 5-(int)Math.Ceiling(Model.Trip.OverallRate); i++)
+            {
+                <span class="glyphicon glyphicon-star-empty"></span>
+            }
+        </p>
+        <p>Driver: <a asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
         <p>Car info: @Model.Trip.CarModel</p>
         <p>Trip info: @Model.Trip.StartDate - from @Model.Trip.StartLocation to @Model.Trip.EndLocation</p>
         <p>Start Address: @Model.Trip.ExactAddress</p>
@@ -80,13 +90,17 @@
             @if (User.IsInRole(WebConstants.AdministratorRole))
             {
                 <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
-            }         
+            }
         </div>
     </div>
 }
 <div class="row ">
     <div class="col-md-5"></div>
     <div class="col-md-1">
-        <a class="btn btn-info btn-sm" asp-controller="Comments" asp-action="RateCommentCreate" asp-route-id="@Model.Trip.Id">Write a comment</a>
+        @if (!Model.Trip.Comments.Any(c => c.CommenterName == User.Identity.Name))
+        {
+            <a class="btn btn-info btn-sm" asp-controller="Comments" asp-action="RateCommentCreate" asp-route-id="@Model.Trip.Id">Write a comment</a>
+        }
+
     </div>
 </div>

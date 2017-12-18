@@ -39,6 +39,11 @@ ul.pagination li.page-item a.disabled {
     color: red;
     font-weight: bold;
 }
+
+.color-yellow {
+    color: #ffd11a;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

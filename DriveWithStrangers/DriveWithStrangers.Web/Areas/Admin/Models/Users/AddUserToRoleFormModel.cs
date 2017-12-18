@@ -1,4 +1,4 @@
-﻿namespace DriveWithStrangers.Web.Areas.Admin.Models
+﻿namespace DriveWithStrangers.Web.Areas.Admin.Models.Users
 {
     using System.ComponentModel.DataAnnotations;
 

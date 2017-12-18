@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Services;
-    using Services.Models;
-
+    using Services.Models.Trips;
 
     public class TripListingViewModel : SearchTripFormModel
     {

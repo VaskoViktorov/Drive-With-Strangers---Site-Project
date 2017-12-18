@@ -7,7 +7,7 @@
     {
         Task CreateAsync(string title, string content, string userId, string userName, int id);
 
-        Task CreateRateCommentAsync(string title, string content,int rate, string userId, string userName, int id);
+        Task<bool> CreateRateCommentAsync(string title, string content,int rate, string userId, string userName, int id);
 
         Task DeleteAsync(int id);
 
