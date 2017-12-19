@@ -32,22 +32,122 @@ ul.pagination li.page-item a.disabled {
 }
 
 .color-green {
-    color: green;
-    font-weight: bold;
+    color: #00800099;
+    font-weight: bolder;
 }
 .color-red {
-    color: red;
-    font-weight: bold;
+    color: #d61414a6;   
+    font-weight: bolder;
 }
-
+.color-dark-purple {
+    color: #a546b5;
+}
+.color-blue {
+    color: #00b3ca !important;
+}
 .color-yellow {
     color: #ffd11a;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
+.mtb-15 {
+    margin:15px 0;
+}
+.mtb-5 {
+    margin: 5px 0;
+}
+.border-radius {
+    border-radius: 25px;
+}
+.heading {
+    font-weight: bolder !important;
+    color: #00b3ca !important;
+}
+.color-white {
+    color: #fff;
+}
+
+.color-purple{
+    color:#b266bfb0;
+}
+
+.search-box {
+    margin-top: 0;
+    padding: 10px 0;
+    background-color: #00b3ca;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+.trip-title {
+    color: #fff;
+    font-weight: bold;
+    background-color: #00b3ca;
+    padding: 4px 20px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    margin-top: 0;
+}
+.hr-style {
+    border-top: 3px solid #00b3ca;
+}
+.article-image {
+    border-radius: 20px;
+    max-width: 85%;
+    border: solid 1px #00b3ca;
+    margin-bottom: 10px;
+}
+
+.article-publisher {
+    text-align: right;
+    padding-right: 60px;
+    padding-bottom: 15px;
+}
+.m-5 {
+    margin: 5px;
+}
+
+.p-0 {
+    padding: 0px;
+}
+.pb-5 {
+    padding-bottom: 5px;
+}
+.text-bold {
+    font-weight: bold;
+}
+.pl-20 {
+    padding-left: 20px;
+}
+
+.user-img {
+    border-radius: 100px;
+    width: 35%;
+    padding-bottom: 10px;
+}
+
+div.container a.navbar-brand {
+    background-color: #b266bfb0;
+    border-top-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    margin-left: 2px !important;
+}
+
+div.navbar-collapse form {
+    padding-right: 30px;
+}
+ul.navbar-nav li a.profile-button {
+    border-radius: 0;
+    border-top-right-radius: 60px;
+    border-bottom-left-radius: 60px;
+    background-color: #b266bfb0;
+}
+    ul.navbar-nav li a.profile-button:hover {
+        background-color: #00b3ca;
+    }
+    /* Hide/rearrange for smaller screens */
+    @media screen and (max-width: 767px) {
+        /* Hide captions */
+        .carousel-caption {
         display: none;       
     }
 }

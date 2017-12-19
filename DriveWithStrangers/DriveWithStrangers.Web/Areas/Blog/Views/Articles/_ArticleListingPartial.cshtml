@@ -3,17 +3,17 @@
 <ul class="list-group article-list">
     @foreach (var article in Model)
     {
-        <li class="list-group-item text-center">
+        <li class="list-group-item text-center mtb-15 border-radius">
             <div class="row">
-                <h2>@article.Title</h2>
+                <h2 class="trip-title">@article.Title</h2>
             </div>
             <div class="row">
-                <img src="@article.ImageUrl" alt="article image" width="200" />
+                <img src="@article.ImageUrl" alt="article image" class="article-image"/>
             </div>
             <div class="row">
                 <p>@article.ShortContent</p>
             </div>
-            <div class="row">
+            <div class="row article-publisher">
                 <small class="small">published by @article.Author on @article.ReleaseDate.ToShortDateString()</small>
             </div>
             <a class="btn btn-info" asp-action="Details" asp-route-id="@article.Id" asp-route-title="@article.Title.ToFriendlyUrl()">Read more</a>

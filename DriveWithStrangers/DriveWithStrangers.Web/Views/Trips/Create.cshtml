@@ -2,16 +2,15 @@
 @{
     ViewData["Title"] = "Create Trip";
 }
-
-<h2>@ViewData["Title"]</h2>
+<h1 class="text-center heading">@ViewData["Title"]</h1>
 
 <div class="row">
-<div class="col-md-6">
-    @Html.Partial("_TripForm", Model)
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        @Html.Partial("_TripForm", Model)
     </div>
 </div>
-
 @section Scripts
-{
+    {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

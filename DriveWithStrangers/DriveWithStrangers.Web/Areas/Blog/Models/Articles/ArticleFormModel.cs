@@ -16,13 +16,16 @@
         public string Content { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Release Date")]
         public DateTime ReleaseDate { get; set; }
 
         [Required]
+        [Display(Name = "Short Content")]
         [MaxLength(ArticleShortContentMaxLength)]
         public string ShortContent { get; set; }
 
         [Required]
+        [Display(Name = "Image URL")]
         [MaxLength(ArticleImageUrlMaxLength)]
         public string ImageUrl { get; set; }
     }

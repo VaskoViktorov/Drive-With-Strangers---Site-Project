@@ -9,14 +9,14 @@
     <div class="col-md-5">
         @if (Model.UserProfileImgUrl == null)
         {
-            <img src="https://d2gcv4sxt84gxu.cloudfront.net/assets/default-user-avatars-original-d5efadcf497ea7b3d86c6f8d148d66633a29ce78fa8391af628adf32d9989354.png" alt="profile pic" />
+            <img class="user-img" src="https://d2gcv4sxt84gxu.cloudfront.net/assets/default-user-avatars-original-d5efadcf497ea7b3d86c6f8d148d66633a29ce78fa8391af628adf32d9989354.png" alt="profile pic" />
         }
         else
         {
-            <img src="@Model.UserProfileImgUrl" alt="profile pic" />
+            <img class="user-img" src="@Model.UserProfileImgUrl" alt="profile pic" />
         }
         <p>
-            <b>Rate: </b>
+            <span class="text-bold color-dark-purple">Rate:</span> 
             @for (var i = 0; i < (int)Math.Ceiling(Model.UserRate); i++)
             {
                 <span class="glyphicon glyphicon-star color-yellow"></span>
@@ -27,10 +27,10 @@
             }
         </p>
         <p>
-            <b>Email:</b> <a>@Model.Email</a>
+            <span class="text-bold color-dark-purple">Email: </span><a>@Model.Email</a>
         </p>
         <p>
-            <b>Phone:</b>
+            <span class="text-bold color-dark-purple">Phone: </span> 
             @if (Model.Phone == null)
             {
                 <span>No phone provided.</span>
@@ -40,8 +40,8 @@
                 @Model.Phone
             }
         </p>
-        <p><b>Full Name:</b> @Model.UserFullName</p>
-        <p><b>Age:</b> @Model.UserAge</p>
+        <p><span class="text-bold color-dark-purple">Full Name:</span>  @Model.UserFullName</p>
+        <p><span class="text-bold color-dark-purple">Age: </span>  @Model.UserAge</p>
         <a class="btn btn-md btn-info" asp-controller="Trips" asp-action="DriverTrips" asp-route-id="@Model.Id">User trips</a>
     </div>
 </div>

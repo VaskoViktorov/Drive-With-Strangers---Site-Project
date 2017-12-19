@@ -74,10 +74,19 @@
         <div class="col-md-3"></div>
         <div class="col-md-6 table-bordered">
             <h4>@comment.Title</h4>
-            <p>@comment.Rate</p>
+            <p>
+                @for (var i = 0; i < comment.Rate; i++)
+                {
+                    <span class="glyphicon glyphicon-star color-yellow"></span>
+                }
+                @for (var i = 0; i < 5 - comment.Rate; i++)
+                {
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                }
+            </p>
             <p>@Html.Raw(comment.Content)</p>
             <small>
-                posted on @comment.CreateDate by @comment.CommenterName
+                posted on @comment.CreateDate by <a asp-controller="Users" asp-action="Profile" asp-route-id="@comment.UserId">@comment.CommenterName</a>
             </small>
             @if (comment.IsEdited)
                 {

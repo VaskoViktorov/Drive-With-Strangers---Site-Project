@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "User Administration";
 }
-<h2>@ViewData["Title"]</h2>
-<table class="table table-bordered table-hover">
+<h1 class="text-center heading">@ViewData["Title"]</h1>
+<table class="table table-bordered table-hover table-responsive">
     <thead>
         <tr>
-            <th>Username</th>
-            <th>Current Roles</th>
-            <th>E-mail</th>        
-            <th>Roles & Actions</th>
+            <th class="color-blue">Username</th>
+            <th class="color-blue">Current Roles</th>
+            <th class="color-blue">E-mail</th>        
+            <th class="color-blue">Roles & Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -20,15 +20,14 @@
                 <td>
                     @if (Model.UserRoles.ContainsKey(user.Id))
                     {
-                     var rolesInDictionary = Model.UserRoles.Where(c => c.Key == user.Id).Select(c => c.Value);
+                        var rolesInDictionary = Model.UserRoles.Where(c => c.Key == user.Id).Select(c => c.Value);
 
                         foreach (var roles in rolesInDictionary)
                         {
                             foreach (var role in roles)
-                            {
+                            {                                
                                 <small class="color-green">@role</small>
-                            }
-                           
+                            }                         
                         }
                     }
                 </td>
@@ -37,14 +36,17 @@
                     <form asp-controller="Users" asp-action="AddToRole" method="post">
 
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-8">
 
                                 <input type="hidden" name="UserId" value="@user.Id" />
                                 <select name="Role" asp-items="@Model.Roles" class="form-control"></select>
                             </div>
-                            <div class="col-md-3">
-                                <input class="btn btn-sm btn-info" type="submit" value="Add Role" name="add" />
-                                <input class="btn btn-sm btn-danger" type="submit" value="Remove Role" name="remove" />
+                            <div class="col-md-1 text-left">
+                                <input class="btn btn-sm btn-info m-5" type="submit" value="Add" name="add" />
+                                
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <input class="btn btn-sm btn-danger m-5" type="submit" value="Remove" name="remove" />
                             </div>
                         </div>
                     </form>

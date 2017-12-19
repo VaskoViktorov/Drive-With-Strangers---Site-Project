@@ -16,12 +16,15 @@
         [Required]
         [MinLength(UserFullNameMinLength)]
         [MaxLength(UserFullNameMaxLength)]
+        [Display(Name = "Full Name")]
         public string UserFullName { get; set; }
 
         [Range(18, 120)]
+        [Display(Name = "Age")]
         public int UserAge { get; set; }
 
         [MaxLength(1000)]
+        [Display(Name = "Profile Image URL")]
         public string UserProfileImgUrl { get; set; }
 
         [MaxLength(13)]

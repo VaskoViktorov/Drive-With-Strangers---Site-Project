@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DriveWithStrangers.Web</title>
+    <title>@ViewData["Title"] - Drive With Strangers</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,22 +26,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DriveWithStrangers</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Drive With Strangers</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="Blog" asp-controller="Articles" asp-action="Index">Blog</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">View Trips</a></li>
+                    @if (User.IsInRole(WebConstants.BlogAuthorRole))
+                    {
+                        <li><a asp-area="Blog" asp-controller="Articles" asp-action="Create">Create Article</a></li>
+                    }
                     <li><a asp-area="" asp-controller="Trips" asp-action="Create">Create Trip</a></li>
                     @if (User.IsInRole(WebConstants.AdministratorRole))
                     {
                         <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
                     }
-                    @if (User.IsInRole(WebConstants.BlogAuthorRole))
-                    {
-                        <li><a asp-area="Blog" asp-controller="Articles" asp-action="Create">Create Article</a></li>
-                    }
+
                 </ul>
 
                 @await Html.PartialAsync("_LoginPartial")
@@ -62,9 +62,9 @@
             </div>
         }
         @RenderBody()
-        <hr />
+        <hr class="hr-style" />
         <footer>
-            <p>&copy; 2017 - DriveWithStrangers</p>
+            <p class="color-dark-purple text-bold text-center">&copy; 2017 - Drive With Strangers</p>
         </footer>
     </div>
     <environment include="Development">

@@ -3,34 +3,60 @@
 <ul class="list-group article-list">
     @foreach (var trip in Model)
     {
-        <li class="list-group-item text-center">
+        <li class="list-group-item text-center mtb-15 border-radius">
             <div class="row">
-                <h2>@trip.Title</h2>
+                <h2 class="trip-title">@trip.Title</h2>
             </div>
             <div class="row">
-                <p>Starts on @trip.StartDate from @trip.StartLocation to @trip.EndLocation</p>
-            </div>
-            <div class="row">
-                @if (trip.PricePerPassenger == 0)
-                {
-                    <h5>Price per passenger: <span class="color-green">FREE</span></h5>
-                }
-                else
-                {
-                    <h5>Price per passenger: @trip.PricePerPassenger $</h5>
-                }
+                <div class="col-md-4"></div>
+                <div class="col-md-1">
+                    <span class="glyphicon glyphicon glyphicon-calendar color-purple"></span>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-left">@trip.StartDate</p>
+                </div>
 
             </div>
             <div class="row">
-                @if (trip.TakenSeats == trip.TotalSeats)
-                {
-                    <h5>Car Space: <span class="color-red">FULL</span></h5>
-                }
-                else
-                {
-                    <p>Car Space: @trip.TakenSeats / @trip.TotalSeats</p>
-                }
-
+                <div class="col-md-4"></div>
+                <div class="col-md-1">
+                    <span class="glyphicon glyphicon glyphicon-road color-purple"></span>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-left"> @trip.StartLocation to @trip.EndLocation</p>
+                </div>            
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-1">
+                    <span class="glyphicon glyphicon glyphicon-usd color-purple"></span>
+                </div>
+                <div class="col-md-4">
+                    @if (trip.PricePerPassenger == 0)
+                    {
+                        <p class="text-left"><span class="color-green">FREE</span></p>
+                    }
+                    else
+                    {
+                        <p class="text-left">@trip.PricePerPassenger $</p>
+                    }
+                </div>                    
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-1">
+                    <span class="glyphicon glyphicon glyphicon-home color-purple"></span>
+                </div>
+                <div class="col-md-4">
+                    @if (trip.TakenSeats == trip.TotalSeats)
+                    {
+                        <p class="text-left"><span class="color-red">FULL</span></p>
+                    }
+                    else
+                    {
+                        <p class="text-left">@trip.TakenSeats / @trip.TotalSeats Seats</p>
+                    }
+                </div>                            
             </div>
             <a class="btn btn-info" asp-action="Details" asp-route-id="@trip.Id" asp-route-title="@trip.Title.ToFriendlyUrl()">Read more</a>
         </li>
