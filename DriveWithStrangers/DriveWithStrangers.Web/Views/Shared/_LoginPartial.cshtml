@@ -11,7 +11,7 @@
             <li>
                 <input type="submit" class="btn btn-link navbar-btn navbar-link" value="Log out">
             </li>
-            <li><a class="profile-button" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@UserManager.GetUserId(this.User)">@UserManager.GetUserName(User) <span class="glyphicon glyphicon glyphicon-cog"></span></a></li>
+            <li><a class="profile-button" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@UserManager.GetUserId(this.User)">@UserManager.GetUserName(User) <span class="glyphicon glyphicon-cog"></span></a></li>
         </ul>
     </form>
 }
@@ -19,6 +19,6 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li><a class="profile-button ml-16" asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
     </ul>
 }

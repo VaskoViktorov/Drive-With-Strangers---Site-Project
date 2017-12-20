@@ -1,4 +1,8 @@
-﻿namespace DriveWithStrangers.Web
+﻿using System.Collections.Generic;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+
+namespace DriveWithStrangers.Web
 {
     using AutoMapper;
     using Data;
@@ -50,8 +54,8 @@
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-          app.UseDatabaseMigration();
+        {          
+            app.UseDatabaseMigration();
 
             if (env.IsDevelopment())
             {

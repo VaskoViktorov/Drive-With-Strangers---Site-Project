@@ -23,8 +23,7 @@
         [MaxLength(TripLocationMaxLength)]
         [Display(Name = "End Location")]
         public string EndLocation { get; set; }
-
-        [DataType(DataType.DateTime)]
+        
         [Display(Name = "Trip Start Date")]
         public DateTime StartDate { get; set; }
 

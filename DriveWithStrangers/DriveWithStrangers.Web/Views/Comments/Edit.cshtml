@@ -2,9 +2,10 @@
 @{
     ViewData["Title"] = "Edit Comment";
 }
-<h2>@ViewData["Title"]</h2>
+<h2 class="text-center heading">@ViewData["Title"]</h2>
 
 <div class="row">
+    <div class="col-md-3"></div>
     <div class="col-md-6">
         @Html.Partial("_CommentForm", Model)
     </div>

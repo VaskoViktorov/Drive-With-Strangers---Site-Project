@@ -54,7 +54,7 @@
                 UserFullName = user.UserFullName,
                 UserAge = user.UserAge,
                 UserProfileImgUrl = user.UserProfileImgUrl,
-                Phone = user.Phone,
+                Phone = user.PhoneNumber,
                 NewPassword = "",
                 CurrentPassword = ""
             });

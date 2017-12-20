@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = Model.Trip.Title;
 }
-
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6 table-bordered">
@@ -13,12 +12,12 @@
             {
                 <span class="glyphicon glyphicon-star color-yellow"></span>
             }
-            @for (var i = 0; i < 5-(int)Math.Ceiling(Model.Trip.OverallRate); i++)
+            @for (var i = 0; i < 5 - (int)Math.Ceiling(Model.Trip.OverallRate); i++)
             {
                 <span class="glyphicon glyphicon-star-empty"></span>
             }
         </p>
-        <p>Driver: <a asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
+        <p>Driver: <a class="a-style-blue" asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
         <p>Car info: @Model.Trip.CarModel</p>
         <p>Trip info: @Model.Trip.StartDate - from @Model.Trip.StartLocation to @Model.Trip.EndLocation</p>
         <p>Start Address: @Model.Trip.ExactAddress</p>
@@ -45,14 +44,13 @@
             @if (Model.Passangers.Any())
             {
                 <p>Signed passagers</p>
-                <ul>
+                <ul class="list-style-none">
                     @foreach (var passenger in Model.Passangers)
                     {
-                        <li><a asp-controller="Users" asp-Action="Profile" asp-route-id="@passenger.Id">@passenger.UserName</a></li>
+                        <li><a class="a-style-blue" asp-controller="Users" asp-Action="Profile" asp-route-id="@passenger.Id">@passenger.UserName</a></li>
                     }
                 </ul>
             }
-
         </div>
     </div>
 </div>
@@ -73,7 +71,7 @@
     <div class="row ">
         <div class="col-md-3"></div>
         <div class="col-md-6 table-bordered">
-            <h4>@comment.Title</h4>
+            <h4 class="text-bold">@comment.Title</h4>
             <p>
                 @for (var i = 0; i < comment.Rate; i++)
                 {
@@ -85,21 +83,26 @@
                 }
             </p>
             <p>@Html.Raw(comment.Content)</p>
-            <small>
-                posted on @comment.CreateDate by <a asp-controller="Users" asp-action="Profile" asp-route-id="@comment.UserId">@comment.CommenterName</a>
-            </small>
-            @if (comment.IsEdited)
-                {
+            <div class="row text-right m-5">
                 <small>
-                    Last edited by @comment.EditorUsername at @comment.EditDate
-
+                    posted on @comment.CreateDate by <a asp-controller="Users" asp-action="Profile" asp-route-id="@comment.UserId">@comment.CommenterName</a>
                 </small>
-            }
-
-            @if (User.IsInRole(WebConstants.AdministratorRole))
+            </div>
+            @if (comment.IsEdited)
             {
-                <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
+                <div class="row text-right m-5">
+                    <small>
+                        Last edited by @comment.EditorUsername at @comment.EditDate
+
+                    </small>
+                </div>
             }
+            <div class="row text-center">
+                @if (User.IsInRole(WebConstants.AdministratorRole))
+                {
+                    <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
+                }
+            </div>
         </div>
     </div>
 }

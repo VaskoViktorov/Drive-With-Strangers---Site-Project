@@ -3,11 +3,11 @@
     ViewData["Title"] = $"Search Results For {Model.SearchText}";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="text-center heading">@ViewData["Title"]</h2>
 
 @if (Model.Trips.Any())
 {
-    <h3>Found Trips</h3>
+    <h3 class="text-center heading">Found Trips</h3>
 
     <div class="row">
         @Html.Partial("_TripListingsPartial", Model.Trips)
@@ -15,5 +15,8 @@
 }
 else
 {
-    <h3>No trips found.</h3>
+    <h3 class="text-center heading">No trips found.</h3> 
 }
+<div class="row text-center">
+    <a class="btn btn-default btn-sm " asp-controller="Trips" asp-action="Index">Back</a>
+</div>

@@ -7,38 +7,38 @@
     <div class="col-md-3"></div>
     <div class="col-md-6 table-bordered text-left mtb-15 border-radius p-0">
         <h1 class="trip-title">@ViewData["Title"]</h1>
-        <p class="pl-20"><span class="text-bold color-dark-purple">Driver: </span><a asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
+        <p class="pl-20"><span class="text-bold color-dark-purple">Driver: </span><a class="a-style-blue" asp-controller="Users" asp-Action="Profile" asp-route-id="@Model.Trip.Driver.Id">@Model.Trip.Driver.UserName</a></p>
         <p class="pl-20"><span class="text-bold color-dark-purple">Car model</span>: @Model.Trip.CarModel</p>
         <p class="pl-20 "><span class="text-bold color-dark-purple">Trip info:</span> @Model.Trip.StartDate - from <span class="text-bold color-dark-purple">@Model.Trip.StartLocation</span> to <span class="text-bold color-dark-purple">@Model.Trip.EndLocation</span></p>
-        <p class="pl-20"><span class="text-bold color-dark-purple">Start Address: </span>@Model.Trip.ExactAddress</p>      
-            @if (Model.Trip.PricePerPassenger == 0)
+        <p class="pl-20"><span class="text-bold color-dark-purple">Start Address: </span>@Model.Trip.ExactAddress</p>
+        @if (Model.Trip.PricePerPassenger == 0)
             {
-                <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger:</span> <span class="color-green">FREE</span></p>
-            }
-            else
-            {
-                <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger: </span>@Model.Trip.PricePerPassenger $</p>
-            }
+            <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger:</span> <span class="color-green">FREE</span></p>
+        }
+        else
+        {
+            <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger: </span>@Model.Trip.PricePerPassenger $</p>
+        }
 
 
-            @if (Model.Passangers.Count() == Model.Trip.TotalSeats)
+        @if (Model.Passangers.Count() == Model.Trip.TotalSeats)
             {
-                <p class="pl-20" ><span class="text-bold color-dark-purple">Car Space: </span><span class="color-red">FULL</span></p>
-            }
-            else
+            <p class="pl-20"><span class="text-bold color-dark-purple">Car Space: </span><span class="color-red">FULL</span></p>
+        }
+        else
+        {
+            <p class="pl-20"><span class="text-bold color-dark-purple">Car Space: </span>@Model.Passangers.Count() / @Model.Trip.TotalSeats</p>
+        }
+        @if (Model.Passangers.Any())
             {
-                <p class="pl-20"><span class="text-bold color-dark-purple">Car Space: </span>@Model.Passangers.Count() / @Model.Trip.TotalSeats</p>
-            }
-            @if (Model.Passangers.Any())
-            {
-                <p  class="pl-20"><span class="text-bold color-dark-purple">Signed passagers: </span></p>
-                <ul>
-                    @foreach (var passenger in Model.Passangers)
-                    {
-                        <li><a asp-controller="Users" asp-Action="Profile" asp-route-id="@passenger.Id">@passenger.UserName</a></li>
-                    }
-                </ul>
-            }
+            <p class="pl-20"><span class="text-bold color-dark-purple">Signed passagers: </span></p>
+            <ul class="list-style-none">
+                @foreach (var passenger in Model.Passangers)
+                {
+                    <li><a class="a-style-blue" asp-controller="Users" asp-Action="Profile" asp-route-id="@passenger.Id">@passenger.UserName</a></li>
+                }
+            </ul>
+        }
         <p class="pl-20 text-left"><span class="text-bold color-dark-purple">Additional info: </span></p>
         <p class="pl-20 text-left">@Model.Trip.Description</p>
     </div>
@@ -82,12 +82,12 @@
         {
             <div class="row">
                 <span class="color-purple text-bold">
-                        To join a trip, please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in.</a>
+                    To join a trip, please <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">log in.</a>
                 </span>
             </div>
             <div class="row">
                 <span class="color-purple text-bold">
-                        If you don't have account, please <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Context.Request.Path">register</a>.
+                    If you don't have account, please <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Context.Request.Path">register</a>.
                 </span>
             </div>
         }
@@ -106,27 +106,31 @@
     <div class="row ">
         <div class="col-md-3"></div>
         <div class="col-md-6 table-bordered text-left mtb-5 border-radius pb-5 text-justify">
-            <h4>@comment.Title</h4>
+            <h4 class="text-bold">@comment.Title</h4>
             <p>@Html.Raw(comment.Content)</p>
-            <small>
-                posted on @comment.CreateDate by <a asp-controller="Users" asp-action="Profile" asp-route-id="@comment.UserId">@comment.CommenterName</a>
-            </small>
+            <div class="row text-right m-5">
+                <small>
+                    Posted on @comment.CreateDate.ToShortDateString() by <a asp-controller="Users" asp-action="Profile" asp-route-id="@comment.UserId">@comment.CommenterName</a>
+                </small>
+            </div>
             @if (comment.IsEdited)
                 {
-                <small>
-                    Last edited by @comment.EditorUsername at @comment.EditDate
-
-                </small>
+                <div class="row text-right m-5">
+                    <small>
+                        Last edited by @comment.EditorUsername at @comment.EditDate.ToShortDateString()
+                    </small>
+                </div>
             }
-
-            @if (User.IsInRole(WebConstants.AdministratorRole))
-            {
-                <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
-            }
-            @if (comment.CommenterName == User.Identity.Name || User.IsInRole(WebConstants.AdministratorRole))
-            {
-                <a class="btn btn-warning  btn-sm" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Edit</a>
-            }
+            <div class="row text-center">
+                @if (User.IsInRole(WebConstants.AdministratorRole))
+                {
+                    <a class="btn btn-danger  btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Delete</a>
+                }
+                @if (comment.CommenterName == User.Identity.Name || User.IsInRole(WebConstants.AdministratorRole))
+                {
+                    <a class="btn btn-warning  btn-sm" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" asp-route-tripId="@Model.Trip.Id" asp-route-title="@comment.Title.ToFriendlyUrl()">Edit</a>
+                }
+            </div>
         </div>
     </div>
 }

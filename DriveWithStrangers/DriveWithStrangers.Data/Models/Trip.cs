@@ -25,6 +25,7 @@
         [MaxLength(TripLocationMaxLength)]
         public string EndLocation { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime StartDate { get; set; }
 
         [Required]

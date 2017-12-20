@@ -242,7 +242,7 @@
 
         public async Task<IEnumerable<TripListingServiceModel>> FindAsync(string searchText, bool startLocation, bool endLocation, bool title)
         {
-            searchText.ToLower();
+            searchText =searchText.ToLower();
 
             var result = await this.db
                 .Trips

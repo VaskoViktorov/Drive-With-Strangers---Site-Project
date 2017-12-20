@@ -3,10 +3,9 @@
     ViewData["Title"] = "Profile";
 }
 
-<div class="row">
-    
+<div class="row">  
     <div class="col-md-5">
-        <h2>
+        <h2 class="heading">
             @Model.Username
             <a class="btn btn-sm btn-info" asp-controller="Users" asp-action="Edit" asp-route-id="@Model.Id">Edit Profile</a>
         </h2>
@@ -33,13 +32,13 @@
         </p>
         <p>
             <span class="text-bold color-dark-purple">Phone: </span>
-            @if (Model.Phone == null)
+            @if (Model.PhoneNumber == null)
             {
                 <span>No phone provided.</span>
             }
             else
             {
-                @Model.Phone
+                @Model.PhoneNumber
             }
         </p>
         <p><span class="text-bold color-dark-purple">Full Name: </span>@Model.UserFullName</p>
