@@ -11,8 +11,69 @@
     <div class="row">
         <div class="col-md-2">
         </div>
-        <div class="col-md-8">
-            @Html.Partial("_TripListingsPartial", Model.Trips)
+        <div class="col-md-8">           
+            <ul class="list-group article-list">
+                @foreach (var trip in Model.Trips)
+                {
+                    <li class="list-group-item text-center mtb-15 border-radius">
+                        <div class="row">
+                            <h2 class="trip-title">@trip.Title</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-1">
+                                <span class="glyphicon glyphicon glyphicon-calendar color-purple"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-left">@trip.StartDate.ToShortDateString()</p>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-1">
+                                <span class="glyphicon glyphicon glyphicon-road color-purple"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-left"> @trip.StartLocation to @trip.EndLocation</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-1">
+                                <span class="glyphicon glyphicon glyphicon-usd color-purple"></span>
+                            </div>
+                            <div class="col-md-4">
+                                @if (trip.PricePerPassenger == 0)
+                    {
+                                    <p class="text-left"><span class="color-green">FREE</span></p>
+                                }
+                                else
+                                {
+                                    <p class="text-left">@trip.PricePerPassenger $</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-1">
+                                <span class="glyphicon glyphicon glyphicon-home color-purple"></span>
+                            </div>
+                            <div class="col-md-4">
+                                @if (trip.TakenSeats == trip.TotalSeats)
+                    {
+                                    <p class="text-left"><span class="color-red">FULL</span></p>
+                                }
+                                else
+                                {
+                                    <p class="text-left">@trip.TakenSeats / @trip.TotalSeats Seats</p>
+                                }
+                            </div>
+                        </div>
+                        <a class="btn btn-info" asp-action="DetailsRate" asp-route-id="@trip.Id" asp-route-title="@trip.Title.ToFriendlyUrl()">Read more</a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 

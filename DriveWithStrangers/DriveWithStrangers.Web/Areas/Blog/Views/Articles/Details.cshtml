@@ -3,26 +3,31 @@
     ViewData["Title"] = Model.Title;
 }
 
-<h1 class=" heading">@ViewData["Title"]</h1>
+
 
 <div class="row">
-    <div class="col-md-6">
-        @Html.Raw(Model.Content)
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h1 class=" heading">@ViewData["Title"]</h1>
+        @Html.Raw(Model.Content)     
+        <h5 class="text-right"><em>published by @Model.Author on @Model.ReleaseDate.ToShortDateString()</em></h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+        @if (User.IsInRole(WebConstants.BlogAuthorRole) && Model.Author == User.Identity.Name)
+        {
+            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Edit</a>
+            <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Delete</a>
+        }
+
+        @if (User.IsInRole(WebConstants.AdministratorRole) && Model.Author != User.Identity.Name)
+        {
+            <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Delete</a>
+        }
+
+        <a class="btn btn-default btn-sm" asp-area="Blog" asp-action="Index">Back</a>
     </div>
 </div>
 
-
-<h5><em>published by @Model.Author on @Model.ReleaseDate.ToShortDateString()</em></h5>
-
-@if (User.IsInRole(WebConstants.BlogAuthorRole) && Model.Author == User.Identity.Name)
-{
-    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Edit</a>
-    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Delete</a>
-}
-
-@if (User.IsInRole(WebConstants.AdministratorRole) && Model.Author != User.Identity.Name)
-{
-    <a class="btn btn-danger  btn-sm" asp-action="Delete" asp-route-id="@Model.Id" asp-route-title="@Model.Title.ToFriendlyUrl()">Delete</a>
-}
-
-<a class="btn btn-default btn-sm" asp-area="Blog" asp-action="Index">Back</a>

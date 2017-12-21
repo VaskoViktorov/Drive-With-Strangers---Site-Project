@@ -152,12 +152,16 @@
 
         [Authorize]
         public async Task<IActionResult> DriverTrips(string id, int page = 1)
-            => this.View(new TripListingViewModel
+        {
+            var driverTrips = await this.trips.TripsByDriverIdAsync(id, page);
+
+            return this.View(new TripListingViewModel
             {
-                Trips = await this.trips.TripsByDriverIdAsync(id, page),
-                TotalTrips = await this.trips.TotalAsync(),
+                Trips = driverTrips,
+                TotalTrips = driverTrips.Count(),
                 CurrentPage = page
             });
+        } 
 
         [Authorize]
         public async Task<IActionResult> PassagerTrips(string id, int page = 1)
@@ -169,10 +173,12 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
+            var passagerTrips = await this.trips.TripsAsPassagerUserIdAsync(id, page);
+
             return this.View(new TripListingViewModel
             {
-                Trips = await this.trips.TripsAsPassagerUserIdAsync(id, page),
-                TotalTrips = await this.trips.TotalAsync(),
+                Trips = passagerTrips,
+                TotalTrips = passagerTrips.Count(),
                 CurrentPage = page
             });
         }
@@ -187,10 +193,12 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
+            var tripsForRate = await this.trips.TripsAsPassagerForRateAsync(id, page);
+
             return this.View(new TripListingViewModel
             {
-                Trips = await this.trips.TripsAsPassagerForRateAsync(id, page),
-                TotalTrips = await this.trips.TotalAsync(),
+                Trips = tripsForRate,
+                TotalTrips = tripsForRate.Count(),
                 CurrentPage = page
             });
         }

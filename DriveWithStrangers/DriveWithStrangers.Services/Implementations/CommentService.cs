@@ -41,7 +41,7 @@
         {
             var trip = this.db.Trips.Where(t => t.Id == id).ProjectTo<TripWithRateCommentsDetailsServiceModel>();
 
-            if (trip.Any(t => t.Comments.Select(c => c.UserId).Contains(userId)))
+            if (trip.Any(t => t.Comments.Where(c => c.IsRateComment).Select(c => c.UserId).Contains(userId)))
             {
                 return false;
             }

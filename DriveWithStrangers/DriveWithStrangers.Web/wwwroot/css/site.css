@@ -155,6 +155,11 @@ ul.navbar-nav li a.profile-button {
 .alert {
   margin-bottom: 0 !important;
 }
+
+.article-short-text {
+    text-align: justify;
+    padding: 0 20px;
+}
     ul.navbar-nav li a.profile-button:hover {
         background-color: #00b3ca;
     }

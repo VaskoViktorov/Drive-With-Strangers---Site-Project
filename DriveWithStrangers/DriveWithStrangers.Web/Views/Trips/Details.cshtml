@@ -12,15 +12,13 @@
         <p class="pl-20 "><span class="text-bold color-dark-purple">Trip info:</span> @Model.Trip.StartDate - from <span class="text-bold color-dark-purple">@Model.Trip.StartLocation</span> to <span class="text-bold color-dark-purple">@Model.Trip.EndLocation</span></p>
         <p class="pl-20"><span class="text-bold color-dark-purple">Start Address: </span>@Model.Trip.ExactAddress</p>
         @if (Model.Trip.PricePerPassenger == 0)
-            {
+        {
             <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger:</span> <span class="color-green">FREE</span></p>
         }
         else
         {
             <p class="pl-20"><span class="text-bold color-dark-purple">Price per passenger: </span>@Model.Trip.PricePerPassenger $</p>
         }
-
-
         @if (Model.Passangers.Count() == Model.Trip.TotalSeats)
             {
             <p class="pl-20"><span class="text-bold color-dark-purple">Car Space: </span><span class="color-red">FULL</span></p>

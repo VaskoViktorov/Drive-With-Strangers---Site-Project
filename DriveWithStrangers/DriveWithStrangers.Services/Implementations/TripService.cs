@@ -64,6 +64,7 @@
         public async Task<int> TotalAsync()
             => await this.db
                 .Trips
+                .Where(t => t.StartDate > DateTime.UtcNow)
                 .CountAsync();
 
         public async Task<TripDetailsServiceModel> DetailsByIdAsync(int id)
@@ -160,7 +161,7 @@
         public async Task<IEnumerable<TripListingServiceModel>> TripsAsPassagerUserIdAsync(string id, int page = 1)
             => await this.db
                 .Trips
-                .Where(t => t.Passengers.Select(u => u.UserId).Contains(id))
+                .Where(t => t.Passengers.Select(u => u.UserId).Contains(id) && t.StartDate > DateTime.UtcNow)
                 .OrderByDescending(a => a.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
